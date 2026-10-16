@@ -1,0 +1,1933 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a1018">
+<title>Футбольный турнир</title>
+<style>
+:root{--accent:#22c55e;--accent-contrast:#06120a;--radius:18px;}
+[data-theme="dark"]{--bg:#0a1018;--bg2:#0f1725;--card:#141f30;--card2:#1b283c;--text:#e7eefb;--muted:#8296b5;--border:#22314a;--shadow:0 8px 24px rgba(0,0,0,.35);}
+[data-theme="light"]{--bg:#eef2f8;--bg2:#e4eaf4;--card:#fff;--card2:#f4f7fc;--text:#0d1a2b;--muted:#5c6c86;--border:#dae2ef;--shadow:0 8px 24px rgba(20,40,80,.08);}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.42;transition:background .2s,color .2s;-webkit-font-smoothing:antialiased;}
+#app{max-width:620px;margin:0 auto;padding:0 14px 70px;padding-top:env(safe-area-inset-top);}
+h1,h2,h3{margin:0;}
+.muted{color:var(--muted);}
+.hint{color:var(--muted);font-size:12.5px;margin:8px 0 0;}
+.lbl{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px;}
+.topbar{display:flex;align-items:center;gap:10px;padding:14px 0 10px;position:sticky;top:0;background:var(--bg);z-index:20;}
+.topbar-title{flex:1;font-weight:700;font-size:17px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.icon-btn{width:40px;height:40px;flex:0 0 40px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s;padding:0;}
+.icon-btn:active{transform:scale(.94);}
+.icon-btn:disabled{opacity:.3;}
+.icon-btn.del{width:32px;height:32px;flex:0 0 32px;font-size:14px;border-radius:10px;color:#ef4444;}
+.btn{display:block;width:100%;padding:15px;border-radius:16px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:15px;font-weight:700;cursor:pointer;transition:.15s;font-family:inherit;text-align:center;}
+.btn:active{transform:scale(.98);}
+.btn:disabled{opacity:.4;}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-contrast);}
+.btn.danger{color:#ef4444;border-color:rgba(239,68,68,.35);}
+.btn.small{padding:11px;font-size:13.5px;border-radius:13px;}
+.btn.tiny{padding:7px 12px;font-size:12px;border-radius:10px;width:auto;display:inline-block;}
+.btn.big{padding:18px;margin-bottom:8px;}
+.btn.big span{display:block;font-size:16px;}
+.btn.big small{display:block;font-size:12px;opacity:.75;font-weight:500;margin-top:2px;}
+.hero{text-align:center;padding:44px 0 26px;}
+.logo{width:84px;height:84px;margin:0 auto 16px;border-radius:26px;display:flex;align-items:center;justify-content:center;font-size:42px;background:var(--card);border:1px solid var(--border);box-shadow:var(--shadow);}
+.hero h1{font-size:25px;font-weight:800;letter-spacing:-.02em;}
+.hero p{margin:6px 0 0;font-size:13.5px;}
+.menu-list{display:flex;flex-direction:column;gap:10px;}
+.menu-btn{display:flex;align-items:center;gap:14px;text-align:left;padding:17px 16px;}
+.menu-btn .ic{font-size:19px;width:26px;text-align:center;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow);}
+.card-title{font-size:17px;font-weight:800;margin-bottom:10px;}
+.card.center{text-align:center;}
+.sep{border:none;border-top:1px solid var(--border);margin:14px 0;}
+.kv{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 0;font-size:14px;}
+.kv span{color:var(--muted);display:flex;align-items:center;gap:7px;}
+.kv b{font-weight:700;}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex:0 0 9px;}
+input,select,textarea{width:100%;padding:12px 14px;border-radius:13px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:15px;font-family:inherit;outline:none;transition:border-color .15s;}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);}
+textarea{resize:vertical;line-height:1.5;}
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+input[type=number]{-moz-appearance:textfield;}
+input[type=range]{padding:0;background:transparent;border:none;height:28px;accent-color:var(--accent);}
+.dots{display:flex;gap:6px;justify-content:center;padding:4px 0 16px;}
+.dots span{width:34px;height:4px;border-radius:3px;background:var(--border);transition:.2s;}
+.dots span.on{background:var(--accent);}
+.preset-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;}
+.preset{border:1px solid var(--border);background:var(--card2);border-radius:13px;padding:11px;cursor:pointer;text-align:left;color:var(--text);font-family:inherit;transition:.15s;}
+.preset:active{transform:scale(.97);}
+.preset.active{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,var(--card2));}
+.preset b{display:block;font-size:13.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.preset span{font-size:11.5px;color:var(--muted);}
+.counter{display:flex;align-items:center;gap:10px;}
+.counter input{text-align:center;font-size:19px;font-weight:800;padding:10px;}
+.team-list{display:flex;flex-direction:column;gap:7px;max-height:44vh;overflow-y:auto;padding-right:2px;}
+.team-row{display:flex;align-items:center;gap:8px;}
+.team-row .num{width:26px;flex:0 0 26px;text-align:center;font-size:12px;font-weight:700;color:var(--muted);}
+.team-row input{padding:10px 12px;font-size:14.5px;}
+.row-btns{display:flex;gap:8px;margin-top:12px;}
+.stat-line{margin-top:10px;font-size:13.5px;color:var(--muted);}
+.stat-line b{color:var(--text);}
+.zones{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.zone-row{display:flex;align-items:center;gap:7px;}
+.zone-row select{flex:1 1 auto;min-width:0;padding:10px 8px;font-size:13.5px;}
+.zone-row input{width:56px;flex:0 0 56px;padding:10px 4px;text-align:center;font-size:14px;font-weight:700;}
+.zone-row .dash{color:var(--muted);}
+.alert{margin-top:12px;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.35);color:#ef4444;border-radius:13px;padding:11px 13px;font-size:13px;line-height:1.6;}
+.ok{margin-top:12px;color:var(--accent);font-size:13px;font-weight:600;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12.5px;}
+.nav-row{display:flex;gap:10px;margin-top:8px;}
+.nav-row .btn{flex:1;}
+.tabs{display:flex;gap:5px;padding:5px;background:var(--card);border:1px solid var(--border);border-radius:15px;margin-bottom:14px;flex-wrap:wrap;}
+.tabs button{flex:1;padding:10px 4px;border-radius:11px;border:none;background:transparent;color:var(--muted);font-weight:700;font-size:12.5px;cursor:pointer;font-family:inherit;transition:.15s;min-width:70px;}
+.tabs button.active{background:var(--accent);color:var(--accent-contrast);}
+.standings{width:100%;border-collapse:collapse;font-size:13px;}
+.standings th{color:var(--muted);font-weight:700;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;padding:6px 3px;text-align:center;}
+.standings th:nth-child(2){text-align:left;padding-left:8px;}
+.standings td{padding:9px 3px;text-align:center;border-top:1px solid var(--border);}
+.standings td.tname{text-align:left;font-weight:600;padding-left:8px;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.standings td.pos{font-weight:700;padding-left:6px;text-align:left;white-space:nowrap;}
+.standings td.pts{font-weight:800;font-size:14px;}
+.zbar{display:inline-block;width:3px;height:14px;border-radius:2px;margin-right:7px;vertical-align:-2px;}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--muted);padding:0 4px 12px;}
+.legend span{display:flex;align-items:center;gap:6px;}
+.round-nav{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:15px;padding:8px;margin-bottom:10px;}
+.round-title{flex:1;text-align:center;font-weight:800;font-size:16px;}
+.round-title small{display:block;font-weight:600;font-size:11px;color:var(--muted);}
+.round-title .muted{font-weight:600;font-size:13px;}
+.progress-line{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12.5px;color:var(--muted);padding:0 4px 10px;}
+.match{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:11px 0;border-bottom:1px solid var(--border);}
+.match:last-child{border-bottom:none;}
+.m-team{font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.m-team.away{text-align:right;}
+.m-team.win{color:var(--accent);}
+.m-score{display:flex;align-items:center;gap:3px;}
+.m-score input{width:44px;flex:0 0 44px;padding:8px 2px;text-align:center;font-weight:800;font-size:16px;border-radius:11px;}
+.m-score span{color:var(--muted);font-weight:800;}
+.round-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.round-head h3{font-size:15px;font-weight:800;}
+.round-head span{font-size:11.5px;color:var(--muted);}
+.bracket-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 0;margin-bottom:12px;box-shadow:var(--shadow);overflow:hidden;}
+.bracket-head{display:flex;align-items:center;justify-content:space-between;padding:0 16px 12px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px;}
+.bracket-head h3{font-size:15.5px;font-weight:800;}
+.bracket-head .acts{display:flex;gap:6px;align-items:center;}
+.bracket-head .progress{font-size:11.5px;color:var(--muted);font-weight:600;}
+.bracket-scroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;padding:18px 16px 22px;scrollbar-width:thin;}
+.bracket-scroll::-webkit-scrollbar{height:6px;}
+.bracket-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:6px;}
+.bracket{display:flex;gap:48px;align-items:stretch;}
+.bracket-col{display:flex;flex-direction:column;min-width:196px;flex-shrink:0;}
+.bracket-col-title{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:var(--muted);text-align:center;padding-bottom:14px;position:relative;}
+.bracket-col-title::after{content:'';position:absolute;left:20%;right:20%;bottom:6px;height:2px;background:var(--border);border-radius:1px;}
+.bracket-col-body{display:flex;flex-direction:column;justify-content:space-around;gap:14px;flex:1;}
+.bracket-match{background:var(--card2);border:1px solid var(--border);border-radius:11px;overflow:hidden;position:relative;transition:.15s;}
+.bracket-match:has(.win){border-color:color-mix(in srgb,var(--accent) 55%,var(--border));}
+.bracket-team{display:flex;align-items:center;gap:6px;padding:7px 8px;border-bottom:1px solid var(--border);min-height:36px;}
+.bracket-team:last-child{border-bottom:none;}
+.bracket-team.win{background:color-mix(in srgb,var(--accent) 14%,transparent);}
+.bracket-team.win .bracket-name{color:var(--accent);font-weight:800;}
+.bracket-team.win input{border-color:var(--accent);color:var(--accent);}
+.bracket-team.bye .bracket-name{color:var(--muted);font-style:italic;}
+.bracket-name{flex:1;font-size:12.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.bracket-team input{width:34px;flex:0 0 34px;padding:4px 2px;text-align:center;font-size:13px;font-weight:800;border-radius:7px;}
+.bracket-team input:disabled{opacity:.4;}
+.bracket-bye-mark{width:34px;flex:0 0 34px;text-align:center;color:var(--muted);font-size:11px;font-weight:700;}
+.bracket-pen{display:flex;align-items:center;justify-content:center;gap:4px;padding:5px 6px;background:color-mix(in srgb,var(--accent) 8%,transparent);font-size:9.5px;font-weight:800;color:var(--muted);letter-spacing:.08em;border-top:1px solid var(--border);}
+.bracket-pen input{width:32px;flex:0 0 32px;padding:3px 2px;text-align:center;font-size:12px;font-weight:800;border-radius:6px;}
+.bracket-pen span{padding:0 1px;}
+.bracket-col:not(:last-child) .bracket-match::after{content:'';position:absolute;right:-25px;top:50%;width:25px;height:2px;background:var(--border);transform:translateY(-50%);pointer-events:none;}
+.bracket-col:not(:first-child) .bracket-match::before{content:'';position:absolute;left:-25px;top:50%;width:25px;height:2px;background:var(--border);transform:translateY(-50%);pointer-events:none;}
+.bracket-col.champ-col .bracket-col-title::after{background:var(--accent);left:8%;right:8%;}
+.champion-box{background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 55%,#fbbf24));color:#08110a;padding:22px 14px;border-radius:14px;text-align:center;font-weight:900;font-size:15px;letter-spacing:.02em;line-height:1.3;box-shadow:0 0 32px color-mix(in srgb,var(--accent) 45%,transparent);animation:champGlow 1.8s ease-in-out infinite alternate;margin:auto 0;}
+.champion-box .crown{font-size:28px;display:block;margin-bottom:6px;}
+@keyframes champGlow{from{box-shadow:0 0 18px color-mix(in srgb,var(--accent) 35%,transparent);transform:scale(1);}to{box-shadow:0 0 44px color-mix(in srgb,var(--accent) 65%,transparent);transform:scale(1.02);}}
+.stage-intro{text-align:center;padding:26px 6px;}
+.stage-intro .ic{font-size:44px;margin-bottom:8px;}
+.seg{display:flex;gap:6px;background:var(--card2);padding:5px;border-radius:14px;border:1px solid var(--border);}
+.seg button{flex:1;padding:11px;border-radius:10px;border:none;background:transparent;color:var(--muted);font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;transition:.15s;}
+.seg button.active{background:var(--accent);color:var(--accent-contrast);}
+.accents{display:flex;gap:10px;flex-wrap:wrap;}
+.acc{width:44px;height:44px;border-radius:14px;border:3px solid transparent;cursor:pointer;transition:.15s;}
+.acc.active{border-color:var(--text);transform:scale(1.06);}
+.about p{font-size:14px;line-height:1.65;color:var(--muted);margin:0 0 12px;}
+.about b{color:var(--text);}
+.feat{display:flex;flex-direction:column;gap:9px;margin-top:6px;}
+.feat div{display:flex;gap:10px;font-size:13.5px;color:var(--muted);}
+.feat div b{color:var(--text);font-weight:700;flex:0 0 auto;}
+.mode-grid{display:grid;grid-template-columns:1fr;gap:8px;}
+.mode-btn{display:flex;align-items:center;gap:12px;text-align:left;padding:14px;border:1px solid var(--border);background:var(--card2);border-radius:14px;color:var(--text);font-family:inherit;cursor:pointer;transition:.15s;}
+.mode-btn:active{transform:scale(.98);}
+.mode-btn.active{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,var(--card2));}
+.mode-btn .mi{font-size:24px;flex:0 0 30px;text-align:center;}
+.mode-btn .mt{flex:1;}
+.mode-btn .mt b{display:block;font-size:14.5px;font-weight:800;}
+.mode-btn .mt span{display:block;font-size:11.5px;color:var(--muted);margin-top:2px;}
+.mode-btn .mc{font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;background:var(--border);color:var(--muted);}
+.mode-btn.active .mc{background:var(--accent);color:var(--accent-contrast);}
+.group-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px;margin-bottom:10px;box-shadow:var(--shadow);}
+.group-head{font-size:14px;font-weight:800;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
+.group-head span{font-size:11px;color:var(--muted);font-weight:600;}
+.group-table{width:100%;border-collapse:collapse;font-size:12px;}
+.group-table th{color:var(--muted);font-size:9.5px;font-weight:700;text-transform:uppercase;padding:4px 2px;text-align:center;letter-spacing:.03em;}
+.group-table th:nth-child(2){text-align:left;padding-left:6px;}
+.group-table td{padding:6px 2px;text-align:center;border-top:1px solid var(--border);}
+.group-table td.tname{text-align:left;font-weight:600;padding-left:6px;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.group-table td.pos{text-align:left;padding-left:4px;font-weight:700;width:22px;}
+.group-table tr.qualify td{background:color-mix(in srgb,var(--accent) 8%,transparent);}
+.group-table tr.qualify td.pos{color:var(--accent);}
+/* podium */
+.podium-overlay{position:fixed;inset:0;z-index:9999;overflow:hidden;background:radial-gradient(circle at 50% 40%,#1a1f2e 0%,#05070c 100%);display:flex;align-items:flex-end;justify-content:center;animation:ovIn .5s ease-out;font-family:inherit;}
+@keyframes ovIn{from{opacity:0;}to{opacity:1;}}
+.podium-overlay .close-x{position:absolute;top:16px;right:16px;z-index:8;width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.confetti-wrap{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1;}
+.confetti-piece{position:absolute;top:-30px;width:10px;height:16px;border-radius:2px;animation:confFall linear infinite;}
+@keyframes confFall{0%{transform:translateY(-40px) rotate(0deg);opacity:1;}100%{transform:translateY(115vh) rotate(880deg);opacity:.15;}}
+.podium-title{position:absolute;top:8%;left:50%;transform:translateX(-50%);text-align:center;z-index:6;width:100%;pointer-events:none;animation:upIn .8s .8s both;}
+.podium-title .trophy{font-size:52px;line-height:1;filter:drop-shadow(0 0 30px rgba(255,215,0,.8));}
+.podium-title .label{color:#FFD700;font-size:12px;font-weight:800;letter-spacing:.42em;margin-top:10px;text-indent:.42em;}
+.podium-title .champ-name{font-size:26px;font-weight:900;color:#fff;margin-top:6px;text-shadow:0 4px 30px rgba(255,215,0,.55);}
+.podium-title .sub{color:rgba(255,255,255,.55);font-size:11.5px;margin-top:4px;font-weight:600;}
+@keyframes upIn{from{opacity:0;transform:translateX(-50%) translateY(30px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
+.podium-stage{position:relative;z-index:3;display:flex;align-items:flex-end;justify-content:center;gap:8px;padding:0 14px 0;width:100%;max-width:520px;height:82vh;}
+.podium-col{flex:1;display:flex;flex-direction:column;align-items:center;transform:translateY(110%);opacity:0;animation:riseUp 1s cubic-bezier(.22,1,.36,1) forwards;}
+.podium-col.pos-1{animation-delay:.4s;flex:1.18;}
+.podium-col.pos-2{animation-delay:.15s;}
+.podium-col.pos-3{animation-delay:.6s;}
+@keyframes riseUp{to{transform:translateY(0);opacity:1;}}
+.podium-name{font-size:12.5px;font-weight:800;margin-bottom:8px;text-align:center;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.7);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 4px;}
+.podium-block{width:100%;border-radius:12px 12px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:10px;font-size:22px;font-weight:900;color:rgba(0,0,0,.42);box-shadow:0 -4px 28px rgba(0,0,0,.45),inset 0 2px 0 rgba(255,255,255,.3);position:relative;}
+.podium-block::after{content:'';position:absolute;inset:0;border-radius:12px 12px 0 0;background:linear-gradient(180deg,rgba(255,255,255,.22) 0%,transparent 45%);pointer-events:none;}
+.podium-block.gold{height:180px;background:linear-gradient(180deg,#FFE066 0%,#FFD700 30%,#DAA520 100%);}
+.podium-block.silver{height:135px;background:linear-gradient(180deg,#EFEFEF 0%,#C0C0C0 40%,#9A9A9A 100%);}
+.podium-block.bronze{height:100px;background:linear-gradient(180deg,#EBA97C 0%,#CD7F32 40%,#9F5F26 100%);}
+.podium-ok{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);z-index:7;padding:13px 38px;border-radius:14px;background:var(--accent);color:var(--accent-contrast);border:none;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 10px 30px color-mix(in srgb,var(--accent) 55%,transparent);animation:upIn .7s 1.2s both;}
+/* ========== FINAL MATCH LIVE ========== */
+.bracket-match.final-match-card{display:flex;flex-direction:column;padding:0;}
+.final-match-card .bracket-team{padding:11px 14px;font-size:13px;}
+.final-match-card .play-final-btn{
+  background:var(--accent);color:var(--accent-contrast);border:none;
+  padding:11px;font-weight:800;font-size:12.5px;cursor:pointer;
+  font-family:inherit;letter-spacing:.05em;border-top:1px solid var(--border);
+  transition:.15s;
+}
+.final-match-card .play-final-btn:active{background:color-mix(in srgb,var(--accent) 75%,#000);}
+.final-overlay{
+  position:fixed;inset:0;z-index:10000;overflow:hidden;
+  background:radial-gradient(ellipse at center top,#12352a 0%,#0a1018 60%,#05070c 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px 20px;color:#fff;font-family:inherit;
+  animation:ovIn .5s ease-out;
+}
+.final-overlay::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(34,197,94,.15), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(255,215,0,.12), transparent 40%);
+}
+.final-overlay .close-x{
+  position:absolute;top:16px;right:16px;z-index:5;
+  width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.25);
+  background:rgba(255,255,255,.08);color:#fff;font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.final-stage{
+  position:relative;z-index:3;width:100%;max-width:480px;
+  display:flex;flex-direction:column;align-items:center;
+}
+.final-minute{
+  font-size:64px;font-weight:900;color:#FFD700;line-height:1;
+  font-variant-numeric:tabular-nums;
+  text-shadow:0 0 40px rgba(255,215,0,.55),0 0 80px rgba(255,215,0,.25);
+  transition:transform .15s;
+}
+.final-minute.pulse{transform:scale(1.08);}
+.final-minute.small{font-size:28px;letter-spacing:.1em;}
+.final-title{
+  font-size:12px;font-weight:800;letter-spacing:.42em;
+  color:rgba(255,255,255,.5);margin-top:10px;text-indent:.42em;
+}
+.final-scoreboard{
+  display:flex;align-items:center;gap:14px;margin-top:26px;width:100%;
+  padding:22px 16px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:20px;
+  transition:all .35s;
+}
+.final-scoreboard.goal-flash{
+  background:rgba(255,215,0,.18);
+  border-color:rgba(255,215,0,.6);
+  transform:scale(1.035);
+  box-shadow:0 0 40px rgba(255,215,0,.3);
+}
+.final-team-name{
+  flex:1;min-width:0;font-size:14.5px;font-weight:800;line-height:1.25;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  color:rgba(255,255,255,.92);
+}
+.final-team-name.left{text-align:right;}
+.final-team-name.right{text-align:left;}
+.final-score{
+  display:flex;align-items:center;gap:6px;flex:0 0 auto;
+  font-size:46px;font-weight:900;font-variant-numeric:tabular-nums;
+  line-height:1;
+}
+.final-score .fs-h,.final-score .fs-a{
+  min-width:46px;text-align:center;display:inline-block;
+  transition:all .35s;
+}
+.final-score.goal .fs-h,.final-score.goal .fs-a{transform:scale(1.15);}
+.final-score .fs-sep{color:rgba(255,255,255,.35);font-size:36px;}
+.final-score .fs-pen{
+  font-size:14px;color:#FFD700;margin-left:8px;font-weight:800;
+  font-variant-numeric:tabular-nums;
+}
+.final-progress{
+  margin-top:22px;width:100%;height:5px;
+  background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden;
+}
+.final-progress .fp-bar{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,#22c55e,#FFD700);
+  border-radius:3px;
+  transition:width .09s linear;
+}
+.final-events{
+  margin-top:20px;width:100%;max-height:170px;overflow-y:auto;
+  display:flex;flex-direction:column;gap:6px;padding-right:4px;
+  scrollbar-width:thin;
+}
+.final-events::-webkit-scrollbar{width:4px;}
+.final-events::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:4px;}
+.final-event{
+  display:flex;align-items:center;gap:10px;padding:8px 14px;
+  background:rgba(255,255,255,.06);border-radius:10px;
+  font-size:13px;font-weight:600;
+  animation:evIn .35s cubic-bezier(.34,1.56,.64,1);
+  border-left:3px solid #FFD700;
+}
+@keyframes evIn{from{opacity:0;transform:translateX(-14px);}to{opacity:1;transform:translateX(0);}}
+.final-event .ev-min{
+  color:#FFD700;font-weight:900;font-variant-numeric:tabular-nums;
+  min-width:36px;font-size:12.5px;letter-spacing:.03em;
+}
+.final-event .ev-goal{font-size:15px;}
+.final-event .ev-team{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.final-event.pen{border-left-color:#3b82f6;}
+.final-event.pen .ev-min{color:#3b82f6;}
+.final-event.miss{border-left-color:rgba(255,255,255,.2);}
+.final-event.miss .ev-min{color:rgba(255,255,255,.5);}
+.final-hint{
+  margin-top:22px;text-align:center;color:rgba(255,255,255,.55);
+  font-size:12.5px;font-weight:600;
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+"use strict";
+
+/* ============ CONSTANTS ============ */
+const MONTHS=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+const WEEKDAYS=['Понедельник','Вторник','Среда','Четверг','Пятница','Суббота','Воскресенье'];
+const ZODIAC=['Овен','Телец','Близнецы','Рак','Лев','Дева','Весы','Скорпион','Стрелец','Козерог','Водолей','Рыбы'];
+const PLANETS=['Меркурий','Венера','Земля','Марс','Юпитер','Сатурн','Уран','Нептун'];
+const GREEK=['Альфа','Бета','Гамма','Дельта','Эпсилон','Дзета','Эта','Тета','Йота','Каппа','Лямбда','Мю','Ню','Кси','Омикрон','Пи','Ро','Сигма','Тау','Ипсилон','Фи','Хи','Пси','Омега'];
+const BUILTIN_PRESETS=[
+  {key:'months',name:'Месяцы',teams:MONTHS},
+  {key:'weekdays',name:'Дни недели',teams:WEEKDAYS},
+  {key:'zodiac',name:'Знаки зодиака',teams:ZODIAC},
+  {key:'planets',name:'Планеты',teams:PLANETS},
+  {key:'greek',name:'Греческий алфавит',teams:GREEK}
+];
+const ZONE_TYPES={
+  playoff:{label:'Плей-офф',color:'#22c55e'},
+  styk:{label:'Стыковые матчи',color:'#f59e0b'},
+  releg:{label:'Вылет',color:'#ef4444'}
+};
+const MODES={
+  classic:{key:'classic',icon:'⚽',title:'Классический',desc:'Круговой турнир + стыковые + плей-офф'},
+  worldcup:{key:'worldcup',icon:'🏆',title:'Режим ЧМ',desc:'Группы по 4 + плей-офф'},
+  lch:{key:'lch',icon:'⭐',title:'Режим ЛЧ',desc:'Единая лига + стыковые + плей-офф'}
+};
+const ACCENTS=['#22c55e','#3b82f6','#f59e0b','#ef4444','#a855f7','#14b8a6'];
+
+const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+let settings=Object.assign({theme:'dark',accent:'#22c55e'},LS.get('ft_settings',{}));
+let customPresets=LS.get('ft_presets',[]);
+if(!Array.isArray(customPresets))customPresets=[];
+const state={screen:'menu',tab:'table',round:1,wiz:null,tournament:LS.get('ft_tournament',null)};
+
+/* ============ UTILS ============ */
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function pow2Floor(n){let p=1;while(p*2<=n)p*=2;return p;}
+function pow2Ceil(n){let p=1;while(p<n)p*=2;return p;}
+function contrastColor(hex){try{const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return (0.299*r+0.587*g+0.114*b)/255>0.62?'#06120a':'#ffffff';}catch(e){return '#06120a';}}
+function applyTheme(){
+  document.documentElement.dataset.theme=settings.theme;
+  document.documentElement.style.setProperty('--accent',settings.accent);
+  document.documentElement.style.setProperty('--accent-contrast',contrastColor(settings.accent));
+  const m=document.querySelector('meta[name="theme-color"]');
+  if(m)m.setAttribute('content',settings.theme==='dark'?'#0a1018':'#eef2f8');
+}
+function roundName(size){
+  if(size<=2)return 'Финал';
+  if(size===4)return '1/2 финала';
+  if(size===8)return '1/4 финала';
+  if(size===16)return '1/8 финала';
+  return '1/'+(size/2)+' финала';
+}
+function numRounds(n,circles){if(n<2)return 0;const per=(n%2===0)?n-1:n;return per*circles;}
+function seedPairs(n){
+  let arr=[1];
+  while(arr.length<n){const len=arr.length*2,next=[];for(const s of arr){next.push(s);next.push(len+1-s);}arr=next;}
+  const pairs=[];for(let i=0;i<arr.length;i+=2)pairs.push([arr[i],arr[i+1]]);
+  return pairs;
+}
+function generateSchedule(n,circles){
+  const base=[];for(let i=0;i<n;i++)base.push(i);
+  if(n%2===1)base.push(-1);
+  const size=base.length,roundsPerCircle=size-1,half=size/2;
+  let arr=base.slice();const out=[];let roundNo=1;
+  for(let c=0;c<circles;c++){
+    for(let r=0;r<roundsPerCircle;r++){
+      const matches=[];
+      for(let i=0;i<half;i++){
+        const A=arr[i],B=arr[size-1-i];
+        if(A===-1||B===-1)continue;
+        const flip=(c%2===1);
+        matches.push({h:flip?B:A,a:flip?A:B,hg:null,ag:null,p:false});
+      }
+      out.push({round:roundNo++,circle:c+1,matches});
+      const last=arr[size-1];
+      for(let i=size-1;i>1;i--)arr[i]=arr[i-1];
+      arr[1]=last;
+    }
+  }
+  return out;
+}
+function computeStandingsFromSchedule(schedule,teamIds,teams){
+  const map={};
+  teamIds.forEach(id=>{map[id]={teamId:id,name:teams[id],p:0,w:0,d:0,l:0,gf:0,ga:0,gd:0,pts:0};});
+  for(const r of schedule){
+    for(const m of r.matches){
+      if(!m.p)continue;
+      const h=map[m.h],a=map[m.a];
+      if(!h||!a)continue;
+      h.p++;a.p++;
+      h.gf+=m.hg;h.ga+=m.ag;a.gf+=m.ag;a.ga+=m.hg;
+      if(m.hg>m.ag){h.w++;a.l++;h.pts+=3;}
+      else if(m.hg<m.ag){a.w++;h.l++;a.pts+=3;}
+      else{h.d++;a.d++;h.pts++;a.pts++;}
+    }
+  }
+  const st=Object.values(map);
+  st.forEach(s=>s.gd=s.gf-s.ga);
+  st.sort((x,y)=>y.pts-x.pts||y.gd-x.gd||y.gf-x.gf||x.name.localeCompare(y.name,'ru'));
+  return st;
+}
+function computeStandings(t){return computeStandingsFromSchedule(t.schedule,t.teams.map((_,i)=>i),t.teams);}
+function matchWinner(m){
+  if(!m)return null;
+  if(m.h==null && m.a==null)return null;
+  if(m.h==null)return m.a;
+  if(m.a==null)return m.h;
+  if(m.hg==null||m.ag==null)return null;
+  if(m.hg>m.ag)return m.h;
+  if(m.ag>m.hg)return m.a;
+  if(m.ph!=null&&m.pa!=null&&m.ph!==m.pa)return m.ph>m.pa?m.h:m.a;
+  return null;
+}
+
+/* ============ WIZARD ============ */
+function defaultZones(n){
+  const z=[];
+  if(n>=4)z.push({type:'playoff',from:1,to:Math.max(2,Math.ceil(n/2)-1)});
+  if(n>=6)z.push({type:'styk',from:Math.ceil(n/2),to:n});
+  return z;
+}
+function newWiz(){
+  const teams=MONTHS.slice();
+  return{step:1,mode:'classic',name:'Мой турнир',presetKey:'months',teams,circles:1,zones:defaultZones(teams.length),newPresetName:''};
+}
+function findPreset(key){
+  if(!key)return null;
+  const b=BUILTIN_PRESETS.find(p=>p.key===key);if(b)return b;
+  if(key.indexOf('custom:')===0){const i=+key.slice(7);const p=customPresets[i];if(p)return{key,name:p.name,teams:p.teams};}
+  return null;
+}
+function validateZones(zones,n){
+  const errs=[];
+  zones.forEach(z=>{
+    const nm=ZONE_TYPES[z.type]?ZONE_TYPES[z.type].label:'Зона';
+    if(!Number.isFinite(z.from)||!Number.isFinite(z.to)){errs.push(nm+': некорректные значения');return;}
+    if(z.from<1||z.to>n||z.from>z.to)errs.push(nm+': места 1–'+n+', «от» ≤ «до»');
+  });
+  const sorted=zones.slice().sort((a,b)=>a.from-b.from);
+  for(let i=0;i<sorted.length-1;i++){
+    if(sorted[i].to>=sorted[i+1].from){
+      const A=ZONE_TYPES[sorted[i].type]?ZONE_TYPES[sorted[i].type].label:'Зона';
+      const B=ZONE_TYPES[sorted[i+1].type]?ZONE_TYPES[sorted[i+1].type].label:'Зона';
+      errs.push('Пересечение: «'+A+'» и «'+B+'»');
+    }
+  }
+  return errs;
+}
+
+/* ============ MENU ============ */
+function renderMenu(){
+  const t=state.tournament;
+  return `
+  <div class="hero">
+    <div class="logo">⚽</div>
+    <h1>Футбольный турнир</h1>
+    <p class="muted">3 режима: классика · ЧМ · ЛЧ</p>
+  </div>
+  ${t?`<button class="btn primary big" data-act="continue">
+        <span>▶ Продолжить</span>
+        <small>${esc(t.name)} — ${MODES[t.mode||'classic'].title}</small>
+      </button>`:''}
+  <div class="menu-list">
+    <button class="btn menu-btn" data-act="go-create"><span class="ic">➕</span><span>Создать турнир</span></button>
+    <button class="btn menu-btn" data-act="go-import"><span class="ic">📥</span><span>Импорт турнира</span></button>
+    <button class="btn menu-btn" data-act="go-settings"><span class="ic">⚙️</span><span>Настройки</span></button>
+    <button class="btn menu-btn" data-act="go-about"><span class="ic">ℹ️</span><span>О программе</span></button>
+  </div>`;
+}
+
+/* ============ WIZARD RENDER ============ */
+function renderCreate(){
+  const w=state.wiz;
+  const titles=['Режим','Команды','Формат','Обзор'];
+  let body='';
+  if(w.step===1)body=stepMode();
+  else if(w.step===2)body=stepTeams();
+  else if(w.step===3)body=stepFormat();
+  else body=stepReview();
+  const errs=validateZones(w.zones,w.teams.length);
+  const canNext=w.step<3||(w.step===3&&(w.mode!=='classic'||errs.length===0));
+  return `
+  <div class="topbar">
+    <button class="icon-btn" data-act="wiz-back">←</button>
+    <div class="topbar-title">${titles[w.step-1]}</div>
+    <div style="width:40px"></div>
+  </div>
+  <div class="dots">${[1,2,3,4].map(i=>`<span class="${i<=w.step?'on':''}"></span>`).join('')}</div>
+  ${body}
+  <div class="nav-row">
+    ${w.step>1?'<button class="btn" data-act="wiz-prev">Назад</button>':''}
+    ${w.step<4
+      ?`<button class="btn primary" data-act="wiz-next" ${canNext?'':'disabled'}>Далее</button>`
+      :`<button class="btn primary" data-act="wiz-create">Начать турнир</button>`}
+  </div>`;
+}
+function stepMode(){
+  const w=state.wiz;
+  const presets=BUILTIN_PRESETS.concat(customPresets.map((p,i)=>({key:'custom:'+i,name:p.name,teams:p.teams})));
+  return `
+  <div class="card">
+    <label class="lbl">Режим турнира</label>
+    <div class="mode-grid">
+      ${Object.keys(MODES).map(k=>`
+        <button class="mode-btn ${w.mode===k?'active':''}" data-act="set-mode" data-mode="${k}">
+          <span class="mi">${MODES[k].icon}</span>
+          <span class="mt"><b>${MODES[k].title}</b><span>${MODES[k].desc}</span></span>
+          <span class="mc">${w.mode===k?'✓':''}</span>
+        </button>`).join('')}
+    </div>
+  </div>
+  <div class="card">
+    <label class="lbl">Название турнира</label>
+    <input data-act="wiz-name" value="${esc(w.name)}" placeholder="Например: Зимний кубок">
+  </div>
+  <div class="card">
+    <label class="lbl">Пресет команд</label>
+    <div class="preset-grid">
+      ${presets.map(p=>`
+        <button class="preset ${w.presetKey===p.key?'active':''}" data-act="preset" data-key="${esc(p.key)}">
+          <b>${esc(p.name)}</b><span>${p.teams.length} ком.</span>
+        </button>`).join('')}
+    </div>
+  </div>`;
+}
+function stepTeams(){
+  const w=state.wiz;
+  return `
+  <div class="card">
+    <label class="lbl">Количество участников</label>
+    <div class="counter">
+      <button class="icon-btn" data-act="count-dec">−</button>
+      <input type="number" min="2" max="32" value="${w.teams.length}" data-act="team-count">
+      <button class="icon-btn" data-act="count-inc">+</button>
+    </div>
+    <p class="hint">От 2 до 32 команд.</p>
+  </div>
+  <div class="card">
+    <label class="lbl">Названия команд</label>
+    <div class="team-list">
+      ${w.teams.map((t,i)=>`
+        <div class="team-row">
+          <span class="num">${i+1}</span>
+          <input value="${esc(t)}" data-act="team-name" data-i="${i}" placeholder="Команда ${i+1}">
+        </div>`).join('')}
+    </div>
+    <div class="row-btns">
+      <button class="btn small" data-act="shuffle">🔀 Перемешать</button>
+      <button class="btn small" data-act="reset-names">↺ Сбросить</button>
+    </div>
+  </div>
+  <div class="card">
+    <label class="lbl">Быстрая загрузка списка</label>
+    <textarea rows="4" data-act="bulk" placeholder="Одна команда в строке"></textarea>
+    <button class="btn small" data-act="load-bulk" style="margin-top:9px">Загрузить список</button>
+    <hr class="sep">
+    <label class="lbl">Создать свой пресет</label>
+    <input data-act="preset-name" placeholder="Название пресета" value="${esc(w.newPresetName)}">
+    <button class="btn small" data-act="save-preset" style="margin-top:9px">💾 Сохранить список</button>
+  </div>`;
+}
+function stepFormat(){
+  const w=state.wiz,n=w.teams.length;
+  const errs=validateZones(w.zones,n);
+  const total=(n*(n-1)/2)*w.circles;
+  if(w.mode==='classic'){
+    return `
+    <div class="card">
+      <label class="lbl">Количество кругов</label>
+      <p class="hint">Сколько раз каждая команда сыграет с каждой (1–54).</p>
+      <div class="counter" style="margin-top:10px">
+        <button class="icon-btn" data-act="circ-dec">−</button>
+        <input type="number" min="1" max="54" value="${w.circles}" data-act="circles">
+        <button class="icon-btn" data-act="circ-inc">+</button>
+      </div>
+      <input type="range" min="1" max="54" value="${w.circles}" data-act="circ-range" style="margin-top:12px">
+      <div class="stat-line">Туров: <b>${numRounds(n,w.circles)}</b> · Матчей: <b>${total}</b></div>
+    </div>
+    <div class="card">
+      <label class="lbl">Зоны мест</label>
+      <p class="hint" style="margin-bottom:12px">Плей-офф — напрямую. Стыковые — играют между собой, 50% победителей идут в плей-офф. Вылет — выбывают.</p>
+      <div class="zones">
+        ${w.zones.length?w.zones.map((z,i)=>`
+          <div class="zone-row">
+            <select data-act="zone-type" data-i="${i}">
+              ${Object.keys(ZONE_TYPES).map(k=>`<option value="${k}" ${z.type===k?'selected':''}>${ZONE_TYPES[k].label}</option>`).join('')}
+            </select>
+            <input type="number" min="1" max="${n}" value="${z.from}" data-act="zone-from" data-i="${i}">
+            <span class="dash">–</span>
+            <input type="number" min="1" max="${n}" value="${z.to}" data-act="zone-to" data-i="${i}">
+            <button class="icon-btn del" data-act="zone-del" data-i="${i}">✕</button>
+          </div>`).join(''):'<p class="hint">Зоны не заданы</p>'}
+      </div>
+      <button class="btn small" data-act="zone-add">+ Добавить зону</button>
+      ${errs.length?`<div class="alert">${errs.map(e=>'<div>⚠ '+esc(e)+'</div>').join('')}</div>`:'<div class="ok">✓ Диапазоны корректны</div>'}
+      <p class="hint" style="margin-top:10px">💡 Пример для 8 команд: плей-офф 1–4, стыковые 5–8. 2 победителя стыков добавятся к 4 командам плей-офф.</p>
+    </div>`;
+  }
+  if(w.mode==='worldcup'){
+    const numGroups=Math.max(2,Math.ceil(n/4));
+    const qualifiers=numGroups*2;
+    const ko=pow2Ceil(qualifiers);
+    return `
+    <div class="card">
+      <label class="lbl">Формат ЧМ</label>
+      <div class="kv"><span>Команд</span><b>${n}</b></div>
+      <div class="kv"><span>Групп</span><b>${numGroups} × ~4</b></div>
+      <div class="kv"><span>Выходят из группы</span><b>по 2 лучших</b></div>
+      <div class="kv"><span>Всего в плей-офф</span><b>${qualifiers}</b></div>
+      <div class="kv"><span>Сетка плей-офф</span><b>${roundName(ko)} (${ko} команд)</b></div>
+      <p class="hint" style="margin-top:10px">2 лучших из каждой группы → плей-офф по олимпийской системе (как на ЧМ-2026).</p>
+    </div>`;
+  }
+  const K=Math.max(4,pow2Floor(Math.floor(n/2)));
+  const direct=K/2;
+  return `
+  <div class="card">
+    <label class="lbl">Формат ЛЧ</label>
+    <div class="kv"><span>Команд в лиге</span><b>${n}</b></div>
+    <div class="kv"><span>Матчей в лиге</span><b>${numRounds(n,1)} (круговой)</b></div>
+    <div class="kv"><span>Напрямую в 1/8</span><b>${direct}</b></div>
+    <div class="kv"><span>Стыковые матчи</span><b>${K}</b></div>
+    <div class="kv"><span>Проходят из стыков</span><b>${K/2}</b></div>
+    <div class="kv"><span>Плей-офф</span><b>${roundName(K)} (${K})</b></div>
+    <p class="hint" style="margin-top:10px">Топ-${direct} напрямую, следующие ${K} играют стыковые. Победители стыков → в основную сетку.</p>
+  </div>`;
+}
+function stepReview(){
+  const w=state.wiz,n=w.teams.length;
+  const total=(n*(n-1)/2)*w.circles;
+  return `
+  <div class="card">
+    <h3 class="card-title">${MODES[w.mode].icon} ${esc(w.name||'Турнир')}</h3>
+    <div class="kv"><span>Режим</span><b>${MODES[w.mode].title}</b></div>
+    <div class="kv"><span>Команд</span><b>${n}</b></div>
+    ${w.mode==='classic'?`<div class="kv"><span>Кругов</span><b>${w.circles}</b></div>
+      <div class="kv"><span>Матчей всего</span><b>${total}</b></div>`:''}
+  </div>
+  <div class="card">
+    <label class="lbl">Участники</label>
+    <div class="chips">${w.teams.map(t=>`<span class="chip">${esc(t)}</span>`).join('')}</div>
+  </div>`;
+}
+
+/* ============ TOURNAMENT RENDER ============ */
+function renderTournament(){
+  const t=state.tournament;
+  if(!t){state.screen='menu';return renderMenu();}
+  const mode=t.mode||'classic';
+  let tabs;
+  if(mode==='worldcup')tabs=[['groups','Группы'],['playoff','Плей-офф'],['info','Инфо']];
+  else if(mode==='lch')tabs=[['league','Лига'],['playoff','Плей-офф'],['info','Инфо']];
+  else tabs=[['table','Таблица'],['rounds','Туры'],['playoff','Плей-офф'],['info','Инфо']];
+  if(!tabs.find(x=>x[0]===state.tab))state.tab=tabs[0][0];
+  let body='';
+  if(state.tab==='table')body=tabTable(t);
+  else if(state.tab==='rounds')body=tabRounds(t);
+  else if(state.tab==='groups')body=tabGroups(t);
+  else if(state.tab==='league')body=tabLeague(t);
+  else if(state.tab==='playoff')body=tabPlayoff(t);
+  else body=tabInfo(t);
+  return `
+  <div class="topbar">
+    <button class="icon-btn" data-act="to-menu">←</button>
+    <div class="topbar-title">${esc(t.name)}</div>
+    <div style="width:40px"></div>
+  </div>
+  <div class="tabs">
+    ${tabs.map(([k,l])=>`<button class="${state.tab===k?'active':''}" data-act="tab" data-tab="${k}">${l}</button>`).join('')}
+  </div>
+  ${body}`;
+}
+function tabTable(t){
+  const st=computeStandings(t);
+  const rows=st.map((s,i)=>{
+    const pos=i+1;
+    const z=t.zones.find(z=>pos>=z.from&&pos<=z.to);
+    const color=z?ZONE_TYPES[z.type].color:'transparent';
+    return `<tr>
+      <td class="pos"><span class="zbar" style="background:${color}"></span>${pos}</td>
+      <td class="tname">${esc(s.name)}</td>
+      <td>${s.p}</td><td>${s.w}</td><td>${s.d}</td><td>${s.l}</td>
+      <td>${s.gf}:${s.ga}</td>
+      <td class="pts">${s.pts}</td>
+    </tr>`;
+  }).join('');
+  return `
+  <div class="card" style="padding:12px 10px">
+    <table class="standings">
+      <thead><tr><th>#</th><th>Команда</th><th>И</th><th>В</th><th>Н</th><th>П</th><th>М</th><th>О</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>
+  ${t.zones.length?`<div class="legend">
+    ${t.zones.map(z=>`<span><i class="dot" style="background:${ZONE_TYPES[z.type].color}"></i>${ZONE_TYPES[z.type].label} (${z.from}–${z.to})</span>`).join('')}
+  </div>`:''}
+  ${t.playoff&&t.playoff.champion!=null?`
+    <div class="card" style="text-align:center">
+      <div class="muted" style="font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:700">Чемпион</div>
+      <div style="font-size:21px;font-weight:800;margin-top:6px;color:var(--accent)">🏆 ${esc(t.teams[t.playoff.champion])}</div>
+    </div>`:''}`;
+}
+function matchCard(m,i,ri,kind){
+  const t=state.tournament;
+  kind=kind||'reg';
+  return `<div class="match">
+    <div class="m-team">${esc(t.teams[m.h])}</div>
+    <div class="m-score">
+      <input type="number" inputmode="numeric" min="0" max="99" value="${m.hg==null?'':m.hg}"
+        data-act="score" data-kind="${kind}" data-ri="${ri}" data-mi="${i}" data-side="hg">
+      <span>:</span>
+      <input type="number" inputmode="numeric" min="0" max="99" value="${m.ag==null?'':m.ag}"
+        data-act="score" data-kind="${kind}" data-ri="${ri}" data-mi="${i}" data-side="ag">
+    </div>
+    <div class="m-team away">${esc(t.teams[m.a])}</div>
+  </div>`;
+}
+function tabRounds(t){
+  const total=t.schedule.length;
+  state.round=clamp(state.round,1,total);
+  const r=t.schedule[state.round-1];
+  if(!r)return '<div class="card center"><p class="hint">Нет туров</p></div>';
+  const played=r.matches.filter(m=>m.p).length;
+  return `
+  <div class="round-nav">
+    <button class="icon-btn" data-act="round-prev" ${state.round<=1?'disabled':''}>‹</button>
+    <div class="round-title">Тур ${r.round}<span class="muted"> / ${total}</span><small>Круг ${r.circle}</small></div>
+    <button class="icon-btn" data-act="round-next" ${state.round>=total?'disabled':''}>›</button>
+  </div>
+  <div class="progress-line">
+    <span id="round-progress">Сыграно ${played} из ${r.matches.length}</span>
+    <button class="btn tiny" data-act="random-round">🎲 Случайно</button>
+  </div>
+  <div class="card">${r.matches.map((m,i)=>matchCard(m,i,state.round-1,'reg')).join('')}</div>
+  <div class="nav-row"><button class="btn small danger" data-act="clear-round">Очистить тур</button></div>`;
+}
+function tabGroups(t){
+  if(!t.groups)return '<div class="card center"><p class="hint">Группы не сформированы</p></div>';
+  let html='';
+  const allComplete=t.groups.every(g=>g.schedule.every(r=>r.matches.every(m=>m.p)));
+  const totalMatches=t.groups.reduce((a,g)=>a+g.schedule.reduce((b,r)=>b+r.matches.length,0),0);
+  const doneMatches=t.groups.reduce((a,g)=>a+g.schedule.reduce((b,r)=>b+r.matches.filter(m=>m.p).length,0),0);
+  const totalRounds=t.groups[0]?t.groups[0].schedule.length:0;
+  state.round=clamp(state.round,1,Math.max(1,totalRounds));
+  html+=`<div class="round-nav">
+    <button class="icon-btn" data-act="round-prev" ${state.round<=1?'disabled':''}>‹</button>
+    <div class="round-title">Тур ${state.round}<span class="muted"> / ${totalRounds}</span></div>
+    <button class="icon-btn" data-act="round-next" ${state.round>=totalRounds?'disabled':''}>›</button>
+  </div>
+  <div class="progress-line">
+    <span>Сыграно ${doneMatches} из ${totalMatches}</span>
+    <button class="btn tiny" data-act="random-group-round">🎲 Случайно</button>
+  </div>`;
+  t.groups.forEach((g,gi)=>{
+    const r=g.schedule[state.round-1];if(!r)return;
+    html+=`<div class="card">
+      <div class="round-head"><h3>Группа ${g.name} · Тур ${r.round}</h3><span>${r.matches.filter(m=>m.p).length}/${r.matches.length}</span></div>
+      ${r.matches.map((m,mi)=>`
+        <div class="match">
+          <div class="m-team">${esc(t.teams[m.h])}</div>
+          <div class="m-score">
+            <input type="number" inputmode="numeric" min="0" max="99" value="${m.hg==null?'':m.hg}"
+              data-act="score" data-kind="group" data-ri="${gi}" data-mi="${mi}" data-side="hg">
+            <span>:</span>
+            <input type="number" inputmode="numeric" min="0" max="99" value="${m.ag==null?'':m.ag}"
+              data-act="score" data-kind="group" data-ri="${gi}" data-mi="${mi}" data-side="ag">
+          </div>
+          <div class="m-team away">${esc(t.teams[m.a])}</div>
+        </div>`).join('')}
+    </div>`;
+  });
+  html+='<hr class="sep"><label class="lbl">Таблицы групп</label>';
+  t.groups.forEach(g=>{
+    const st=computeStandingsFromSchedule(g.schedule,g.teamIds,t.teams);
+    const rows=st.map((s,i)=>`
+      <tr class="${i<2?'qualify':''}">
+        <td class="pos">${i+1}</td><td class="tname">${esc(s.name)}</td>
+        <td>${s.p}</td><td>${s.w}</td><td>${s.d}</td><td>${s.l}</td>
+        <td>${s.gf}:${s.ga}</td><td style="font-weight:800">${s.pts}</td>
+      </tr>`).join('');
+    html+=`<div class="group-card">
+      <div class="group-head">Группа ${g.name}<span>${st.length} команд</span></div>
+      <table class="group-table">
+        <thead><tr><th>#</th><th>Команда</th><th>И</th><th>В</th><th>Н</th><th>П</th><th>М</th><th>О</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+  });
+  if(allComplete&&!t.knockout){
+    html+=`<button class="btn primary" style="margin-top:10px" data-act="make-wc-knockout">Перейти к плей-офф</button>`;
+  }
+  return html;
+}
+function tabLeague(t){
+  const st=computeStandingsFromSchedule(t.schedule,t.teams.map((_,i)=>i),t.teams);
+  const totalRounds=t.schedule.length;
+  state.round=clamp(state.round,1,totalRounds);
+  const r=t.schedule[state.round-1];
+  const played=r?r.matches.filter(m=>m.p).length:0;
+  const K=Math.max(4,pow2Floor(Math.floor(t.teams.length/2)));
+  const direct=K/2;
+  const playoffEnd=direct+K;
+  const rows=st.map((s,i)=>{
+    const pos=i+1;
+    let cls='';
+    if(pos<=direct)cls='qualify';
+    const color=pos<=direct?'#22c55e':pos<=playoffEnd?'#f59e0b':'transparent';
+    return `<tr class="${cls}">
+      <td class="pos"><span class="zbar" style="background:${color}"></span>${pos}</td>
+      <td class="tname">${esc(s.name)}</td>
+      <td>${s.p}</td><td>${s.w}</td><td>${s.d}</td><td>${s.l}</td>
+      <td>${s.gf}:${s.ga}</td>
+      <td class="pts">${s.pts}</td>
+    </tr>`;
+  }).join('');
+  const allComplete=t.schedule.every(r=>r.matches.every(m=>m.p));
+  return `
+  <div class="card" style="padding:12px 10px">
+    <div style="font-size:12px;color:var(--muted);padding:0 4px 8px;font-weight:700;text-transform:uppercase;letter-spacing:.06em">Единая лига</div>
+    <table class="standings">
+      <thead><tr><th>#</th><th>Команда</th><th>И</th><th>В</th><th>Н</th><th>П</th><th>М</th><th>О</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>
+  <div class="legend">
+    <span><i class="dot" style="background:#22c55e"></i>Напрямую в 1/8 (1–${direct})</span>
+    <span><i class="dot" style="background:#f59e0b"></i>Стыковые (${direct+1}–${playoffEnd})</span>
+  </div>
+  <div class="round-nav">
+    <button class="icon-btn" data-act="round-prev" ${state.round<=1?'disabled':''}>‹</button>
+    <div class="round-title">Тур ${state.round}<span class="muted"> / ${totalRounds}</span></div>
+    <button class="icon-btn" data-act="round-next" ${state.round>=totalRounds?'disabled':''}>›</button>
+  </div>
+  <div class="progress-line">
+    <span id="round-progress">Сыграно ${played} из ${r?r.matches.length:0}</span>
+    <button class="btn tiny" data-act="random-round">🎲 Случайно</button>
+  </div>
+  ${r?`<div class="card">${r.matches.map((m,i)=>matchCard(m,i,state.round-1,'reg')).join('')}</div>`:''}
+  ${allComplete&&!t.playoff&&!t.lchPlayoff?`<button class="btn primary" style="margin-top:10px" data-act="make-lch-playoff">Сформировать стыковые матчи</button>`:''}`;
+}
+
+/* ============ BRACKET ============ */
+function renderBracketMatch(t,m,kind,ri,mi,isFinal){
+  const w=matchWinner(m);
+  const isBye=(m.h==null||m.a==null);
+  const played=(m.hg!=null&&m.ag!=null);
+  const draw=played&&m.hg===m.ag&&m.ph==null;
+  const hName=m.h!=null?t.teams[m.h]:'—';
+  const aName=m.a!=null?t.teams[m.a]:'—';
+
+  // Спец-карточка для финала: вместо полей ввода — кнопка запуска
+  if(isFinal && !played && m.h!=null && m.a!=null){
+    return `<div class="bracket-match final-match-card">
+      <div class="bracket-team"><span class="bracket-name">${esc(hName)}</span></div>
+      <div class="bracket-team"><span class="bracket-name">${esc(aName)}</span></div>
+      <button class="play-final-btn" data-act="play-final" data-bracket="${kind}" data-ri="${ri}" data-mi="${mi}">
+        ▶ НАЧАТЬ ФИНАЛ
+      </button>
+    </div>`;
+  }
+
+  return `<div class="bracket-match">
+    <div class="bracket-team ${w===m.h&&m.h!=null?'win':''} ${m.h==null?'bye':''}">
+      <span class="bracket-name">${esc(hName)}</span>
+      ${m.h!=null
+        ?`<input type="number" inputmode="numeric" min="0" max="99" value="${m.hg==null?'':m.hg}" ${isBye?'disabled':''}
+            data-act="score" data-kind="${kind}" data-ri="${ri}" data-mi="${mi}" data-side="hg">`
+        :`<span class="bracket-bye-mark">bye</span>`}
+    </div>
+    <div class="bracket-team ${w===m.a&&m.a!=null?'win':''} ${m.a==null?'bye':''}">
+      <span class="bracket-name">${esc(aName)}</span>
+      ${m.a!=null
+        ?`<input type="number" inputmode="numeric" min="0" max="99" value="${m.ag==null?'':m.ag}" ${isBye?'disabled':''}
+            data-act="score" data-kind="${kind}" data-ri="${ri}" data-mi="${mi}" data-side="ag">`
+        :`<span class="bracket-bye-mark">bye</span>`}
+    </div>
+    ${draw?`<div class="bracket-pen">
+      <span>ПЕН</span>
+      <input type="number" inputmode="numeric" min="0" max="20" value="${m.ph==null?'':m.ph}"
+        data-act="score" data-kind="${kind}" data-ri="${ri}" data-mi="${mi}" data-side="ph">
+      <span>:</span>
+      <input type="number" inputmode="numeric" min="0" max="20" value="${m.pa==null?'':m.pa}"
+        data-act="score" data-kind="${kind}" data-ri="${ri}" data-mi="${mi}" data-side="pa">
+    </div>`:''}
+  </div>`;
+}
+
+function renderBracket(t,bracket,kind,opts){
+  opts=opts||{};
+  if(!bracket)return '';
+  const firstCount=bracket.rounds[0].matches.length;
+  const minH=Math.max(440,firstCount*82);
+  const totalMatches=bracket.rounds.reduce((a,R)=>a+R.matches.length,0)+(opts.withThird&&bracket.third?1:0);
+  const doneMatches=bracket.rounds.reduce((a,R)=>a+R.matches.filter(m=>matchWinner(m)!=null).length,0)
+    +(opts.withThird&&bracket.third&&matchWinner(bracket.third)!=null?1:0);
+  const lastRoundIdx=bracket.rounds.length-1;
+
+  let cols=bracket.rounds.map((R,ri)=>{
+    const isFinalRound=(ri===lastRoundIdx && R.matches.length===1 && kind!=='lchpo');
+    const matches=R.matches.map((m,mi)=>renderBracketMatch(t,m,kind,ri,mi,isFinalRound)).join('');
+    return `<div class="bracket-col">
+      <div class="bracket-col-title">${esc(R.name)}</div>
+      <div class="bracket-col-body">${matches}</div>
+    </div>`;
+  }).join('');
+
+  let thirdHtml='';
+  if(opts.withThird&&bracket.third){
+    thirdHtml=`<div class="card" style="margin-top:12px">
+      <div class="round-head"><h3>🥉 Матч за 3-е место</h3><span>${matchWinner(bracket.third)!=null?'завершён':'—'}</span></div>
+      ${renderBracketMatch(t,bracket.third,'third',0,0,false)}
+    </div>`;
+  }
+  let champCol='';
+  if(bracket.champion!=null){
+    champCol=`<div class="bracket-col champ-col">
+      <div class="bracket-col-title">🏆 Победитель</div>
+      <div class="bracket-col-body">
+        <div class="champion-box"><span class="crown">👑</span>${esc(t.teams[bracket.champion])}</div>
+      </div>
+    </div>`;
+  }
+  return `<div class="bracket-card">
+    <div class="bracket-head">
+      <h3>${esc(opts.title||'Плей-офф')}</h3>
+      <div class="acts">
+        <span class="progress">${doneMatches}/${totalMatches}</span>
+        <button class="btn tiny" data-act="random-bracket" data-bracket="${kind}">🎲 Случайно</button>
+      </div>
+    </div>
+    <div class="bracket-scroll">
+      <div class="bracket" style="min-height:${minH}px">${cols}${champCol}</div>
+    </div>
+    ${thirdHtml}
+  </div>`;
+}
+
+function renderStykCard(t,styk,locked){
+  const R=styk.rounds[0];
+  const done=R.matches.filter(m=>matchWinner(m)!=null).length;
+  return `<div class="bracket-card">
+    <div class="bracket-head">
+      <h3>Стыковые матчи</h3>
+      <div class="acts">
+        <span class="progress">${done}/${R.matches.length}</span>
+        ${!locked?`<button class="btn tiny" data-act="random-bracket" data-bracket="styk">🎲 Случайно</button>`:''}
+      </div>
+    </div>
+    <div style="padding:8px 16px 8px">
+      ${R.matches.map((m,mi)=>{
+        const w=matchWinner(m);
+        const draw=m.hg!=null&&m.ag!=null&&m.hg===m.ag&&w==null;
+        return `
+          <div class="match">
+            <div class="m-team ${w===m.h?'win':''}">${esc(t.teams[m.h])}</div>
+            <div class="m-score">
+              <input type="number" inputmode="numeric" min="0" max="99" value="${m.hg==null?'':m.hg}"
+                data-act="score" data-kind="styk" data-ri="0" data-mi="${mi}" data-side="hg" ${locked?'disabled':''}>
+              <span>:</span>
+              <input type="number" inputmode="numeric" min="0" max="99" value="${m.ag==null?'':m.ag}"
+                data-act="score" data-kind="styk" data-ri="0" data-mi="${mi}" data-side="ag" ${locked?'disabled':''}>
+            </div>
+            <div class="m-team away ${w===m.a?'win':''}">${esc(t.teams[m.a])}</div>
+          </div>
+          ${draw&&!locked?`
+            <div class="bracket-pen" style="margin:-4px 0 6px">
+              <span>ПЕН</span>
+              <input type="number" inputmode="numeric" min="0" max="20" value="${m.ph==null?'':m.ph}"
+                data-act="score" data-kind="styk" data-ri="0" data-mi="${mi}" data-side="ph">
+              <span>:</span>
+              <input type="number" inputmode="numeric" min="0" max="20" value="${m.pa==null?'':m.pa}"
+                data-act="score" data-kind="styk" data-ri="0" data-mi="${mi}" data-side="pa">
+            </div>`:''}
+        `;
+      }).join('')}
+    </div>
+  </div>`;
+}
+
+function tabPlayoff(t){
+  const mode=t.mode||'classic';
+  if(mode==='worldcup'){
+    if(!t.knockout){
+      const totalMatches=t.groups?t.groups.reduce((a,g)=>a+g.schedule.reduce((b,r)=>b+r.matches.length,0),0):0;
+      const doneMatches=t.groups?t.groups.reduce((a,g)=>a+g.schedule.reduce((b,r)=>b+r.matches.filter(m=>m.p).length,0),0):0;
+      const allComplete=doneMatches===totalMatches&&totalMatches>0;
+      return `<div class="card"><div class="stage-intro">
+        <div class="ic">🏆</div>
+        <h3 style="font-size:17px;font-weight:800">Плей-офф ещё не сформирован</h3>
+        <p class="hint">Завершите матчи группового этапа.</p>
+        <div class="kv" style="justify-content:center;gap:14px;margin-top:10px"><span>Сыграно</span><b>${doneMatches} / ${totalMatches}</b></div>
+        ${allComplete?`<button class="btn primary" style="margin-top:14px" data-act="make-wc-knockout">Сформировать плей-офф</button>`:''}
+      </div></div>`;
+    }
+    return renderBracket(t,t.knockout,'ko',{withThird:true,title:'Плей-офф ЧМ'});
+  }
+  if(mode==='lch'){
+    if(!t.lchPlayoff&&!t.playoff){
+      const totalMatches=t.schedule.reduce((a,r)=>a+r.matches.length,0);
+      const done=t.schedule.reduce((a,r)=>a+r.matches.filter(m=>m.p).length,0);
+      const allComplete=done===totalMatches;
+      return `<div class="card"><div class="stage-intro">
+        <div class="ic">⭐</div>
+        <h3 style="font-size:17px;font-weight:800">Плей-офф ещё не сформирован</h3>
+        <p class="hint">Завершите матчи лигового этапа.</p>
+        <div class="kv" style="justify-content:center;gap:14px;margin-top:10px"><span>Сыграно</span><b>${done} / ${totalMatches}</b></div>
+        ${allComplete?`<button class="btn primary" style="margin-top:14px" data-act="make-lch-playoff">Сформировать стыковые матчи</button>`:''}
+      </div></div>`;
+    }
+    let html='';
+    if(t.lchPlayoff)html+=renderBracket(t,t.lchPlayoff,'lchpo',{withThird:false,title:'Стыковые матчи'});
+    if(t.playoff)html+=renderBracket(t,t.playoff,'po',{withThird:true,title:'Плей-офф'});
+    return html;
+  }
+  const hasZones=t.zones.some(z=>z.type==='playoff'||z.type==='styk');
+  if(!t.playoff&&!t.styk){
+    const total=t.schedule.reduce((a,r)=>a+r.matches.length,0);
+    const done=t.schedule.reduce((a,r)=>a+r.matches.filter(m=>m.p).length,0);
+    const allPlayed=done===total;
+    return `<div class="card"><div class="stage-intro">
+      <div class="ic">🏆</div>
+      <h3 style="font-size:17px;font-weight:800">Плей-офф ещё не сформирован</h3>
+      ${!hasZones?`<p class="hint">Не заданы зоны «Плей-офф» или «Стыковые матчи».</p>`
+        :allPlayed?`<button class="btn primary" style="margin-top:14px" data-act="make-playoff">Сформировать стыковые и плей-офф</button>`
+        :`<p class="hint">Завершите все матчи регулярного сезона.</p>`}
+      <div class="kv" style="justify-content:center;gap:14px;margin-top:10px"><span>Сыграно</span><b>${done} / ${total}</b></div>
+    </div></div>`;
+  }
+  let html='';
+  if(t.styk){
+    const stykDone=t.styk.rounds[0].matches.every(m=>matchWinner(m)!=null);
+    html+=renderStykCard(t,t.styk,stykDone);
+    if(!stykDone){
+      html+=`<div class="card center">
+        <p class="hint">Завершите стыковые матчи — победители добавятся к командам плей-офф.</p>
+      </div>`;
+    }
+  }
+  if(t.playoff)html+=renderBracket(t,t.playoff,'po',{withThird:true,title:'Плей-офф'});
+  return html;
+}
+
+function tabInfo(t){
+  const mode=t.mode||'classic';
+  let played=0,total=0;
+  if(mode==='worldcup'&&t.groups){
+    total=t.groups.reduce((a,g)=>a+g.schedule.reduce((b,r)=>b+r.matches.length,0),0);
+    played=t.groups.reduce((a,g)=>a+g.schedule.reduce((b,r)=>b+r.matches.filter(m=>m.p).length,0),0);
+  } else {
+    total=t.schedule.reduce((a,r)=>a+r.matches.length,0);
+    played=t.schedule.reduce((a,r)=>a+r.matches.filter(m=>m.p).length,0);
+  }
+  const json=JSON.stringify(t);
+  return `
+  <div class="card">
+    <div class="kv"><span>Режим</span><b>${MODES[mode].title}</b></div>
+    <div class="kv"><span>Команд</span><b>${t.teams.length}</b></div>
+    ${t.circles?`<div class="kv"><span>Кругов</span><b>${t.circles}</b></div>`:''}
+    ${t.groups?`<div class="kv"><span>Групп</span><b>${t.groups.length}</b></div>`:''}
+    <div class="kv"><span>Матчей сыграно</span><b>${played} / ${total}</b></div>
+  </div>
+  <div class="card">
+    <label class="lbl">Экспорт</label>
+    <textarea rows="5" readonly id="export-area">${esc(json)}</textarea>
+    <button class="btn small" data-act="copy-export" style="margin-top:9px">📋 Скопировать код</button>
+  </div>
+  <div class="card">
+    <label class="lbl">Опасная зона</label>
+    <button class="btn small danger" data-act="reset-tournament" style="margin-bottom:9px">Сбросить все результаты</button>
+    <button class="btn small danger" data-act="delete-tournament">Удалить турнир</button>
+  </div>`;
+}
+
+function renderImport(){
+  return `
+  <div class="topbar">
+    <button class="icon-btn" data-act="to-menu">←</button>
+    <div class="topbar-title">Импорт турнира</div>
+    <div style="width:40px"></div>
+  </div>
+  <div class="card">
+    <label class="lbl">Вставьте код турнира (JSON)</label>
+    <textarea rows="8" data-act="import-text" placeholder='{"name":"Мой турнир",...}'></textarea>
+    <button class="btn primary" data-act="do-import" style="margin-top:10px">Импортировать</button>
+  </div>
+  <div class="card">
+    <label class="lbl">Или загрузите файл</label>
+    <input type="file" accept=".json,application/json" data-act="import-file">
+  </div>`;
+}
+
+function renderSettings(){
+  const themes=[['dark','🌙 Тёмная'],['light','☀️ Светлая']];
+  return `
+  <div class="topbar">
+    <button class="icon-btn" data-act="to-menu">←</button>
+    <div class="topbar-title">Настройки</div>
+    <div style="width:40px"></div>
+  </div>
+  <div class="card">
+    <label class="lbl">Тема</label>
+    <div class="seg">${themes.map(([k,l])=>`<button class="${settings.theme===k?'active':''}" data-act="set-theme" data-theme="${k}">${l}</button>`).join('')}</div>
+  </div>
+  <div class="card">
+    <label class="lbl">Акцент</label>
+    <div class="accents">${ACCENTS.map(a=>`<button class="acc ${settings.accent===a?'active':''}" style="background:${a}" data-act="set-accent" data-accent="${a}"></button>`).join('')}</div>
+  </div>
+  <div class="card">
+    <label class="lbl">Сохранённый турнир</label>
+    <div class="kv"><span>Название</span><b>${state.tournament?esc(state.tournament.name):'—'}</b></div>
+    <button class="btn small danger" data-act="clear-data" style="margin-top:10px">Очистить все данные</button>
+  </div>
+  <div class="card">
+    <label class="lbl">Мои пресеты</label>
+    ${customPresets.length?customPresets.map((p,i)=>`<div class="kv"><span>${esc(p.name)} (${p.teams.length})</span><button class="icon-btn del" data-act="del-preset" data-i="${i}">✕</button></div>`).join(''):'<p class="hint">Нет пресетов</p>'}
+  </div>`;
+}
+
+function renderAbout(){
+  return `
+  <div class="topbar">
+    <button class="icon-btn" data-act="to-menu">←</button>
+    <div class="topbar-title">О программе</div>
+    <div style="width:40px"></div>
+  </div>
+  <div class="card about">
+    <div style="text-align:center;margin-bottom:16px">
+      <div class="logo" style="width:68px;height:68px;font-size:34px;border-radius:22px">⚽</div>
+      <h2 style="font-size:19px;font-weight:800;margin-top:12px">Футбольный турнир</h2>
+      <p style="margin-top:4px">Версия 2.2 · 3 режима</p>
+    </div>
+    <div class="feat">
+      <div><b>⚽</b><span>Классика: круговой + стыковые + плей-офф</span></div>
+      <div><b>🏆</b><span>ЧМ: группы по 4 + плей-офф</span></div>
+      <div><b>⭐</b><span>ЛЧ: единая лига + стыковые + плей-офф</span></div>
+      <div><b>⚡</b><span>Финал — прямая трансляция: минуты, счёт, голы</span></div>
+      <div><b>🥇</b><span>Подиум с золотом, серебром и бронзой</span></div>
+    </div>
+  </div>`;
+}
+
+function render(opts){
+  const app=document.getElementById('app');
+  let html='';
+  switch(state.screen){
+    case 'create':html=renderCreate();break;
+    case 'import':html=renderImport();break;
+    case 'settings':html=renderSettings();break;
+    case 'about':html=renderAbout();break;
+    case 'tournament':html=renderTournament();break;
+    default:html=renderMenu();
+  }
+  app.innerHTML=html;
+  if(!opts||!opts.keepScroll)window.scrollTo(0,0);
+}
+function saveTournament(){LS.set('ft_tournament',state.tournament);}
+function updateRoundProgress(){
+  const el=document.getElementById('round-progress');
+  if(!el)return;
+  const t=state.tournament;
+  const r=t.schedule[state.round-1];
+  if(!r)return;
+  el.textContent='Сыграно '+r.matches.filter(m=>m.p).length+' из '+r.matches.length;
+}
+
+/* ============ CREATE ============ */
+function createTournament(){
+  const w=state.wiz;
+  const n=w.teams.length;
+  const mode=w.mode;
+  if(mode==='classic'){
+    const errs=validateZones(w.zones,n);
+    if(errs.length){alert('Ошибки в зонах:\n'+errs.join('\n'));return;}
+  }
+  const teams=w.teams.map((t,i)=>((t||'').trim()||('Команда '+(i+1))));
+  if(mode==='classic'){
+    const schedule=generateSchedule(n,w.circles);
+    state.tournament={v:5,mode:'classic',name:(w.name||'').trim()||'Турнир',teams,circles:w.circles,
+      zones:w.zones.map(z=>({type:z.type,from:z.from,to:z.to})),schedule,playoff:null,styk:null,createdAt:Date.now()};
+  } else if(mode==='worldcup'){
+    const numGroups=Math.max(2,Math.ceil(n/4));
+    const baseSize=Math.floor(n/numGroups);
+    const extra=n%numGroups;
+    const groups=[];
+    let idx=0;
+    for(let g=0;g<numGroups;g++){
+      const size=baseSize+(g<extra?1:0);
+      const teamIds=[];
+      for(let k=0;k<size;k++)teamIds.push(idx++);
+      const sch=generateSchedule(size,1);
+      groups.push({name:String.fromCharCode(65+g),teamIds,schedule:sch});
+    }
+    state.tournament={v:5,mode:'worldcup',name:(w.name||'').trim()||'ЧМ',teams,circles:1,groups,knockout:null,createdAt:Date.now()};
+  } else {
+    const schedule=generateSchedule(n,1);
+    state.tournament={v:5,mode:'lch',name:(w.name||'').trim()||'ЛЧ',teams,circles:1,schedule,lchPlayoff:null,playoff:null,createdAt:Date.now()};
+  }
+  state.round=1;
+  state.tab=mode==='worldcup'?'groups':mode==='lch'?'league':'table';
+  state.screen='tournament';
+  saveTournament();
+  render();
+}
+
+/* ============ BRACKET BUILD ============ */
+function buildBracket(teamIds){
+  const n=teamIds.length;
+  if(n<2)return null;
+  const size=pow2Ceil(n);
+  const padded=teamIds.slice();
+  while(padded.length<size)padded.push(null);
+  const pairs=seedPairs(size);
+  const matches=pairs.map(([a,b])=>({h:padded[a-1],a:padded[b-1],hg:null,ag:null,ph:null,pa:null}));
+  return {size,seedCount:n,rounds:[{name:roundName(size),matches}],third:null,champion:null};
+}
+function checkBracketProgress(bracket,withThird){
+  if(!bracket)return;
+  let guard=0;
+  while(guard++<20){
+    const R=bracket.rounds[bracket.rounds.length-1];
+    if(!R)break;
+    const complete=R.matches.every(m=>matchWinner(m)!=null);
+    if(!complete)break;
+    if(R.matches.length===1){bracket.champion=matchWinner(R.matches[0]);break;}
+    const winners=R.matches.map(m=>matchWinner(m));
+    const nm=[];
+    for(let k=0;k<winners.length;k+=2)nm.push({h:winners[k],a:winners[k+1],hg:null,ag:null,ph:null,pa:null});
+    bracket.rounds.push({name:roundName(nm.length*2),matches:nm});
+    if(withThird&&R.matches.length===2&&!bracket.third){
+      const losers=R.matches.map(m=>matchWinner(m)===m.h?m.a:m.h);
+      bracket.third={h:losers[0],a:losers[1],hg:null,ag:null,ph:null,pa:null};
+    }
+  }
+}
+function randomizeBracketRound(bracket,withThird){
+  if(!bracket)return false;
+  for(let ri=0;ri<bracket.rounds.length;ri++){
+    const R=bracket.rounds[ri];
+    const incomplete=R.matches.filter(m=>matchWinner(m)==null && m.h!=null && m.a!=null);
+    if(incomplete.length===0)continue;
+    incomplete.forEach(m=>{
+      let hg=Math.floor(Math.random()*5),ag=Math.floor(Math.random()*5);
+      if(hg===ag){if(Math.random()<0.5)hg++;else ag++;}
+      m.hg=hg;m.ag=ag;m.ph=null;m.pa=null;
+    });
+    checkBracketProgress(bracket,withThird);
+    return true;
+  }
+  if(withThird&&bracket.third&&matchWinner(bracket.third)==null){
+    let hg=Math.floor(Math.random()*5),ag=Math.floor(Math.random()*5);
+    if(hg===ag){if(Math.random()<0.5)hg++;else ag++;}
+    bracket.third.hg=hg;bracket.third.ag=ag;
+    return true;
+  }
+  return false;
+}
+function randomizeStykClassic(){
+  const t=state.tournament;
+  const R=t.styk.rounds[0];
+  const incomplete=R.matches.filter(m=>matchWinner(m)==null);
+  if(incomplete.length===0)return false;
+  incomplete.forEach(m=>{
+    let hg=Math.floor(Math.random()*5),ag=Math.floor(Math.random()*5);
+    if(hg===ag){if(Math.random()<0.5)hg++;else ag++;}
+    m.hg=hg;m.ag=ag;m.ph=null;m.pa=null;
+  });
+  checkClassicPlayoffComplete();
+  return true;
+}
+
+/* ============ CLASSIC STYK ============ */
+function makeClassicPlayoff(){
+  const t=state.tournament;
+  const st=computeStandings(t);
+  const pz=t.zones.find(z=>z.type==='playoff');
+  const sz=t.zones.find(z=>z.type==='styk');
+  if(!pz && !sz){alert('Нужна зона «Плей-офф» или «Стыковые матчи»');return;}
+  const directTeams = pz ? st.slice(pz.from-1,pz.to).map(s=>s.teamId) : [];
+  const stykTeams = sz ? st.slice(sz.from-1,sz.to).map(s=>s.teamId) : [];
+  if(stykTeams.length < 2){
+    t.playoff = buildBracket(directTeams);
+    t.styk = null;
+    t.phase = 'playoff';
+    saveTournament();render();return;
+  }
+  const cnt = stykTeams.length;
+  const pairCount = Math.floor(cnt/2);
+  const matches = [];
+  const byeTeams = [];
+  for(let i=0;i<pairCount;i++){
+    matches.push({h:stykTeams[i],a:stykTeams[cnt-1-i],hg:null,ag:null,ph:null,pa:null});
+  }
+  if(cnt % 2 === 1)byeTeams.push(stykTeams[Math.floor(cnt/2)]);
+  t.styk = {rounds:[{name:'Стыковые',matches}],third:null,champion:null,_directTeams:directTeams,_byeTeams:byeTeams};
+  t.playoff = null;
+  t.phase = 'playoff';
+  saveTournament();render();
+}
+function checkClassicPlayoffComplete(){
+  const t=state.tournament;
+  if(t.mode!=='classic')return;
+  if(!t.styk || t.playoff)return;
+  const allComplete = t.styk.rounds[0].matches.every(m=>matchWinner(m)!=null);
+  if(!allComplete)return;
+  const winners = t.styk.rounds[0].matches.map(m=>matchWinner(m));
+  const allTeams = (t.styk._directTeams||[]).concat(t.styk._byeTeams||[]).concat(winners);
+  t.playoff = buildBracket(allTeams);
+  saveTournament();
+}
+function makeWCKnockout(){
+  const t=state.tournament;
+  if(!t.groups)return;
+  const qualifiers=[];
+  t.groups.forEach(g=>{
+    const st=computeStandingsFromSchedule(g.schedule,g.teamIds,t.teams);
+    qualifiers.push(st[0].teamId);
+    if(st[1])qualifiers.push(st[1].teamId);
+  });
+  const bracket=buildBracket(qualifiers);
+  if(!bracket){alert('Не удалось сформировать');return;}
+  t.knockout=bracket;
+  saveTournament();render();
+}
+function makeLCHPlayoff(){
+  const t=state.tournament;
+  const st=computeStandingsFromSchedule(t.schedule,t.teams.map((_,i)=>i),t.teams);
+  const n=t.teams.length;
+  const K=Math.max(4,pow2Floor(Math.floor(n/2)));
+  const direct=K/2;
+  const playoffEnd=Math.min(direct+K,n);
+  const directTeams=st.slice(0,direct).map(s=>s.teamId);
+  const playoffTeams=st.slice(direct,playoffEnd).map(s=>s.teamId);
+  const pairCount=Math.floor(playoffTeams.length/2);
+  const pairs=[];
+  const byeTeams=[];
+  for(let i=0;i<pairCount;i++){
+    pairs.push({h:playoffTeams[i],a:playoffTeams[playoffTeams.length-1-i],hg:null,ag:null,ph:null,pa:null});
+  }
+  if(playoffTeams.length%2===1)byeTeams.push(playoffTeams[Math.floor(playoffTeams.length/2)]);
+  if(!pairs.length){
+    t.playoff=buildBracket(directTeams.concat(byeTeams));
+  } else {
+    t.lchPlayoff={rounds:[{name:'Стыковые',matches:pairs}],third:null,champion:null,_directTeams:directTeams,_byeTeams:byeTeams};
+  }
+  saveTournament();render();
+}
+function checkLCHPlayoffComplete(){
+  const t=state.tournament;
+  if(!t.lchPlayoff||t.playoff)return;
+  const all=t.lchPlayoff.rounds[0].matches.every(m=>matchWinner(m)!=null);
+  if(!all)return;
+  const winners=t.lchPlayoff.rounds[0].matches.map(m=>matchWinner(m));
+  const allTeams=(t.lchPlayoff._directTeams||[]).concat(t.lchPlayoff._byeTeams||[]).concat(winners);
+  t.playoff=buildBracket(allTeams);
+  saveTournament();
+}
+
+/* ============ FINAL MATCH LIVE ============ */
+function playFinalMatch(t, bracket, ri, mi){
+  const R = bracket.rounds[ri];
+  if(!R) return;
+  const m = R.matches[mi];
+  if(!m || m.h == null || m.a == null) return;
+  if(m.hg != null && m.ag != null) return;
+  if(document.querySelector('.final-overlay')) return;
+
+  const hName = t.teams[m.h];
+  const aName = t.teams[m.a];
+
+  const ov = document.createElement('div');
+  ov.className = 'final-overlay';
+  ov.innerHTML = `
+    <button class="close-x" data-act="close-final">✕</button>
+    <div class="final-stage">
+      <div class="final-minute">0'</div>
+      <div class="final-title">ФИНАЛ</div>
+      <div class="final-scoreboard">
+        <div class="final-team-name left">${esc(hName)}</div>
+        <div class="final-score">
+          <span class="fs-h">0</span>
+          <span class="fs-sep">:</span>
+          <span class="fs-a">0</span>
+        </div>
+        <div class="final-team-name right">${esc(aName)}</div>
+      </div>
+      <div class="final-progress"><div class="fp-bar"></div></div>
+      <div class="final-events"></div>
+      <div class="final-hint">Первый тайм начинается...</div>
+    </div>
+  `;
+  document.body.appendChild(ov);
+
+  const minuteEl = ov.querySelector('.final-minute');
+  const titleEl = ov.querySelector('.final-title');
+  const hEl = ov.querySelector('.fs-h');
+  const aEl = ov.querySelector('.fs-a');
+  const barEl = ov.querySelector('.fp-bar');
+  const eventsEl = ov.querySelector('.final-events');
+  const scoreboardEl = ov.querySelector('.final-scoreboard');
+  const scoreEl = ov.querySelector('.final-score');
+  const hintEl = ov.querySelector('.final-hint');
+
+  let minute = 0;
+  let hg = 0, ag = 0;
+
+  // Предгенерируем голы (1-5 голов)
+  const numGoals = 1 + Math.floor(Math.random() * 5);
+  const goalMinutes = new Set();
+  while(goalMinutes.size < numGoals){
+    goalMinutes.add(1 + Math.floor(Math.random() * 89));
+  }
+
+  const interval = setInterval(() => {
+    if(!document.body.contains(ov)){
+      clearInterval(interval);
+      return;
+    }
+    minute++;
+
+    minuteEl.textContent = minute + "'";
+    minuteEl.classList.add('pulse');
+    setTimeout(() => minuteEl.classList.remove('pulse'), 150);
+    barEl.style.width = (minute / 90 * 100) + '%';
+
+    if(minute === 45){
+      titleEl.textContent = 'ПЕРЕРЫВ';
+      hintEl.textContent = 'Второй тайм...';
+    } else if(minute === 46){
+      titleEl.textContent = 'ФИНАЛ';
+    }
+
+    if(goalMinutes.has(minute)){
+      const isHome = Math.random() < 0.5;
+      if(isHome) hg++; else ag++;
+      hEl.textContent = hg;
+      aEl.textContent = ag;
+
+      const ev = document.createElement('div');
+      ev.className = 'final-event';
+      ev.innerHTML = `<span class="ev-min">${minute}'</span><span class="ev-goal">⚽</span><span class="ev-team">${esc(isHome ? hName : aName)}</span>`;
+      eventsEl.appendChild(ev);
+      eventsEl.scrollTop = eventsEl.scrollHeight;
+
+      scoreboardEl.classList.add('goal-flash');
+      scoreEl.classList.add('goal');
+      setTimeout(() => {
+        scoreboardEl.classList.remove('goal-flash');
+        scoreEl.classList.remove('goal');
+      }, 500);
+    }
+
+    if(minute >= 90){
+      clearInterval(interval);
+      minuteEl.textContent = "90'";
+      barEl.style.width = '100%';
+      setTimeout(() => finishFinalMatch(t, bracket, m, hg, ag, ov, hName, aName), 1000);
+    }
+  }, 55);
+}
+
+function finishFinalMatch(t, bracket, m, hg, ag, ov, hName, aName){
+  if(!document.body.contains(ov)) return;
+  const minuteEl = ov.querySelector('.final-minute');
+  const titleEl = ov.querySelector('.final-title');
+  const eventsEl = ov.querySelector('.final-events');
+  const hintEl = ov.querySelector('.final-hint');
+  const scoreEl = ov.querySelector('.final-score');
+
+  if(hg === ag){
+    // Пенальти
+    titleEl.textContent = 'ПЕНАЛЬТИ';
+    hintEl.textContent = 'Серия послематчевых пенальти';
+    minuteEl.textContent = '⚽';
+    minuteEl.classList.add('small');
+
+    // Генерируем счёт пенальти
+    let hp = 3 + Math.floor(Math.random() * 3);
+    let ap = 3 + Math.floor(Math.random() * 3);
+    while(hp === ap){
+      hp = 3 + Math.floor(Math.random() * 3);
+      ap = 3 + Math.floor(Math.random() * 3);
+    }
+
+    // Визуальная серия пенальти
+    const totalKicks = 5;
+    for(let i = 0; i < totalKicks; i++){
+      setTimeout(() => {
+        if(!document.body.contains(ov)) return;
+        const isHome = i % 2 === 0;
+        const scored = Math.random() < 0.75;
+        const ev = document.createElement('div');
+        ev.className = 'final-event pen' + (scored ? '' : ' miss');
+        ev.innerHTML = `<span class="ev-min">ПЕН</span><span class="ev-goal">${scored ? '⚽' : '❌'}</span><span class="ev-team">${esc(isHome ? hName : aName)}</span>`;
+        eventsEl.appendChild(ev);
+        eventsEl.scrollTop = eventsEl.scrollHeight;
+      }, i * 260);
+    }
+
+    setTimeout(() => {
+      if(!document.body.contains(ov)) return;
+      m.hg = hg;
+      m.ag = ag;
+      m.ph = hp;
+      m.pa = ap;
+      m.p = true;
+
+      minuteEl.textContent = 'МАТЧ ОКОНЧЕН';
+      minuteEl.classList.add('small');
+      scoreEl.innerHTML = `<span class="fs-h">${hg}</span><span class="fs-sep">:</span><span class="fs-a">${ag}</span><span class="fs-pen">(${hp}:${ap})</span>`;
+      hintEl.textContent = 'Победа по пенальти!';
+
+      closeFinalAndShowPodium(t, bracket, ov);
+    }, totalKicks * 260 + 900);
+  } else {
+    // Победа в основное время
+    m.hg = hg;
+    m.ag = ag;
+    m.p = true;
+
+    minuteEl.textContent = 'МАТЧ ОКОНЧЕН';
+    minuteEl.classList.add('small');
+    titleEl.textContent = 'ФИНАЛ';
+    hintEl.textContent = 'Финальный свисток!';
+
+    closeFinalAndShowPodium(t, bracket, ov);
+  }
+}
+
+function closeFinalAndShowPodium(t, bracket, ov){
+  setTimeout(() => {
+    if(!document.body.parentNode) return;
+    ov.style.transition = 'opacity .7s';
+    ov.style.opacity = '0';
+    setTimeout(() => {
+      if(ov.parentNode) ov.remove();
+      checkBracketProgress(bracket, true);
+      saveTournament();
+      render({keepScroll: true});
+      if(bracket.champion != null){
+        setTimeout(() => showPodium(t), 600);
+      }
+    }, 750);
+  }, 1800);
+}
+
+/* ============ SCORE HANDLING ============ */
+function tourField(act,el,isChange){
+  const t=state.tournament;
+  if(!t||act!=='score')return;
+  const kind=el.dataset.kind;
+  const ri=+el.dataset.ri,mi=+el.dataset.mi,side=el.dataset.side;
+
+  let m=null;
+  if(kind==='reg'){const r=t.schedule[ri];if(r)m=r.matches[mi];}
+  else if(kind==='group'){const g=t.groups[ri];if(g){const r=g.schedule[state.round-1];if(r)m=r.matches[mi];}}
+  else if(kind==='ko'){const R=t.knockout&&t.knockout.rounds[ri];if(R)m=R.matches[mi];}
+  else if(kind==='po'){const R=t.playoff&&t.playoff.rounds[ri];if(R)m=R.matches[mi];}
+  else if(kind==='styk'){const R=t.styk&&t.styk.rounds[ri];if(R)m=R.matches[mi];}
+  else if(kind==='lchpo'){const R=t.lchPlayoff&&t.lchPlayoff.rounds[ri];if(R)m=R.matches[mi];}
+  else if(kind==='third'){m=t.playoff&&t.playoff.third;}
+  if(!m)return;
+
+  const raw=el.value.trim();
+  if(raw==='')m[side]=null;
+  else{m[side]=clamp(parseInt(raw,10)||0,0,(side==='ph'||side==='pa')?20:99);}
+
+  if(kind==='reg'||kind==='group'){
+    m.p=(m.hg!=null&&m.ag!=null);
+    updateRoundProgress();
+    saveTournament();
+    return;
+  }
+
+  const champBefore=t.playoff&&t.playoff.champion;
+
+  if(kind==='ko')checkBracketProgress(t.knockout,true);
+  else if(kind==='po')checkBracketProgress(t.playoff,true);
+  else if(kind==='lchpo'){checkBracketProgress(t.lchPlayoff,false);checkLCHPlayoffComplete();}
+  else if(kind==='styk'){checkClassicPlayoffComplete();}
+
+  saveTournament();
+
+  if(isChange){
+    render({keepScroll:true});
+    const champAfter=t.playoff&&t.playoff.champion;
+    if(champAfter!=null&&champBefore==null){
+      setTimeout(()=>showPodium(t),400);
+    }
+  }
+}
+
+/* ============ WIZARD FIELD ============ */
+function wizardField(act,el,isChange){
+  const w=state.wiz;if(!w)return;
+  switch(act){
+    case 'wiz-name':w.name=el.value;break;
+    case 'preset-name':w.newPresetName=el.value;break;
+    case 'team-name':{const i=+el.dataset.i;if(i>=0&&i<w.teams.length)w.teams[i]=el.value;break;}
+    case 'team-count':if(isChange)setCount(parseInt(el.value,10)||2);break;
+    case 'circles':if(isChange){w.circles=clamp(parseInt(el.value,10)||1,1,54);render({keepScroll:true});}break;
+    case 'circ-range':{
+      w.circles=clamp(parseInt(el.value,10)||1,1,54);
+      const num=document.querySelector('[data-act="circles"]');if(num)num.value=w.circles;
+      const sl=document.querySelector('.stat-line');
+      if(sl){const n=w.teams.length;sl.innerHTML='Туров: <b>'+numRounds(n,w.circles)+'</b> · Матчей: <b>'+((n*(n-1)/2)*w.circles)+'</b>';}
+      if(isChange)render({keepScroll:true});
+      break;
+    }
+    case 'zone-type':if(isChange){w.zones[+el.dataset.i].type=el.value;render({keepScroll:true});}break;
+    case 'zone-from':if(isChange){w.zones[+el.dataset.i].from=clamp(parseInt(el.value,10)||1,1,32);render({keepScroll:true});}break;
+    case 'zone-to':if(isChange){w.zones[+el.dataset.i].to=clamp(parseInt(el.value,10)||1,1,32);render({keepScroll:true});}break;
+  }
+}
+function setCount(n){
+  const w=state.wiz;n=clamp(n,2,32);
+  while(w.teams.length<n)w.teams.push('Команда '+(w.teams.length+1));
+  while(w.teams.length>n)w.teams.pop();
+  w.zones=w.zones.map(z=>{let from=clamp(z.from,1,n),to=clamp(z.to,1,n);if(from>to)from=to;return{type:z.type,from,to};});
+  render({keepScroll:true});
+}
+
+/* ============ PODIUM ============ */
+function showPodium(t){
+  if(document.querySelector('.podium-overlay'))return;
+  const champ=t.playoff&&t.playoff.champion;
+  if(champ==null)return;
+  const P=t.playoff;
+  let second=null,third=null;
+  const finalR=P.rounds[P.rounds.length-1];
+  if(finalR&&finalR.matches.length===1){
+    const fm=finalR.matches[0];
+    const w=matchWinner(fm);
+    second=w===fm.h?fm.a:fm.h;
+  }
+  if(P.third&&matchWinner(P.third)!=null)third=matchWinner(P.third);
+  const confColors=['#FFD700','#C0C0C0','#CD7F32','#22c55e','#3b82f6','#ef4444','#a855f7','#ffffff'];
+  const pieces=[];
+  for(let i=0;i<80;i++){
+    const left=Math.random()*100;
+    const delay=(Math.random()*3).toFixed(2);
+    const dur=(2.8+Math.random()*3).toFixed(2);
+    const col=confColors[Math.floor(Math.random()*confColors.length)];
+    const w=6+Math.floor(Math.random()*8);
+    const h=10+Math.floor(Math.random()*10);
+    pieces.push(`<div class="confetti-piece" style="left:${left}%;width:${w}px;height:${h}px;background:${col};animation-delay:${delay}s;animation-duration:${dur}s;border-radius:${Math.random()<0.4?'50%':'2px'}"></div>`);
+  }
+  const ov=document.createElement('div');
+  ov.className='podium-overlay';
+  ov.innerHTML=`
+    <button class="close-x" data-act="close-podium">✕</button>
+    <div class="confetti-wrap">${pieces.join('')}</div>
+    <div class="podium-title">
+      <div class="trophy">🏆</div>
+      <div class="label">ЧЕМПИОН</div>
+      <div class="champ-name">${esc(t.teams[champ])}</div>
+      <div class="sub">${esc(t.name)}</div>
+    </div>
+    <div class="podium-stage">
+      ${second!=null?`<div class="podium-col pos-2"><div class="podium-name">${esc(t.teams[second])}</div><div class="podium-block silver">2</div></div>`:''}
+      <div class="podium-col pos-1"><div class="podium-name">${esc(t.teams[champ])}</div><div class="podium-block gold">1</div></div>
+      ${third!=null?`<div class="podium-col pos-3"><div class="podium-name">${esc(t.teams[third])}</div><div class="podium-block bronze">3</div></div>`:''}
+    </div>
+    <button class="podium-ok" data-act="close-podium">Отлично!</button>
+  `;
+  document.body.appendChild(ov);
+  setTimeout(()=>{
+    if(ov.parentNode){
+      ov.style.transition='opacity .6s';
+      ov.style.opacity='0';
+      setTimeout(()=>ov.remove(),600);
+    }
+  },11000);
+}
+
+/* ============ ACTIONS ============ */
+function handleAction(act,el){
+  const w=state.wiz;
+  switch(act){
+    case 'go-create':state.wiz=newWiz();state.screen='create';render();break;
+    case 'go-import':state.screen='import';render();break;
+    case 'go-settings':state.screen='settings';render();break;
+    case 'go-about':state.screen='about';render();break;
+    case 'continue':state.screen='tournament';state.round=1;state.tab=null;render();break;
+    case 'to-menu':state.screen='menu';render();break;
+
+    case 'wiz-back':if(w.step>1){w.step--;render();}else{state.screen='menu';render();}break;
+    case 'wiz-next':
+      if(w.step===3&&w.mode==='classic'){
+        const errs=validateZones(w.zones,w.teams.length);
+        if(errs.length){alert('Исправьте зоны:\n'+errs.join('\n'));break;}
+      }
+      w.step++;render();break;
+    case 'wiz-prev':w.step--;render();break;
+    case 'wiz-create':createTournament();break;
+    case 'set-mode':w.mode=el.dataset.mode;render();break;
+
+    case 'preset':{
+      const key=el.dataset.key;
+      const p=findPreset(key);
+      if(p){w.presetKey=key;w.teams=p.teams.slice(0,32);w.zones=defaultZones(w.teams.length);render();}
+      break;
+    }
+    case 'count-inc':setCount(w.teams.length+1);break;
+    case 'count-dec':setCount(w.teams.length-1);break;
+    case 'shuffle':{const a=w.teams;for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const t=a[i];a[i]=a[j];a[j]=t;}render();break;}
+    case 'reset-names':w.teams=w.teams.map((t,i)=>'Команда '+(i+1));render();break;
+    case 'load-bulk':{
+      const ta=document.querySelector('[data-act="bulk"]');if(!ta)break;
+      const list=ta.value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+      if(list.length<2){alert('Минимум 2 команды');break;}
+      w.teams=list.slice(0,32);w.zones=defaultZones(w.teams.length);render();
+      break;
+    }
+    case 'save-preset':{
+      const name=(w.newPresetName||'').trim();
+      if(!name){alert('Введите название');break;}
+      customPresets.push({name,teams:w.teams.slice()});
+      LS.set('ft_presets',customPresets);w.newPresetName='';alert('Пресет сохранён');render();
+      break;
+    }
+    case 'circ-inc':w.circles=clamp(w.circles+1,1,54);render();break;
+    case 'circ-dec':w.circles=clamp(w.circles-1,1,54);render();break;
+    case 'zone-add':w.zones.push({type:'styk',from:1,to:1});render();break;
+    case 'zone-del':w.zones.splice(+el.dataset.i,1);render();break;
+
+    case 'tab':state.tab=el.dataset.tab;render();break;
+    case 'round-prev':state.round=Math.max(1,state.round-1);render();break;
+    case 'round-next':{
+      const t=state.tournament;
+      let maxR=1;
+      if((t.mode||'classic')==='worldcup'&&t.groups)maxR=t.groups[0]?t.groups[0].schedule.length:1;
+      else maxR=t.schedule.length;
+      state.round=Math.min(maxR,state.round+1);render();
+      break;
+    }
+    case 'random-round':{
+      const t=state.tournament;
+      const r=t.schedule[state.round-1];if(!r)break;
+      r.matches.forEach(m=>{m.hg=Math.floor(Math.random()*4);m.ag=Math.floor(Math.random()*4);m.p=true;});
+      saveTournament();render();break;
+    }
+    case 'random-group-round':{
+      const t=state.tournament;
+      t.groups.forEach(g=>{
+        const r=g.schedule[state.round-1];if(!r)return;
+        r.matches.forEach(m=>{m.hg=Math.floor(Math.random()*4);m.ag=Math.floor(Math.random()*4);m.p=true;});
+      });
+      saveTournament();render();break;
+    }
+    case 'clear-round':{
+      const t=state.tournament;const r=t.schedule[state.round-1];if(!r)break;
+      if(!confirm('Очистить тур '+r.round+'?'))break;
+      r.matches.forEach(m=>{m.hg=null;m.ag=null;m.p=false;});
+      saveTournament();render();break;
+    }
+
+    case 'make-playoff':if(confirm('Сформировать стыковые матчи и плей-офф?'))makeClassicPlayoff();break;
+    case 'make-wc-knockout':if(confirm('Сформировать плей-офф ЧМ?'))makeWCKnockout();break;
+    case 'make-lch-playoff':if(confirm('Сформировать стыковые матчи?'))makeLCHPlayoff();break;
+
+    case 'play-final':{
+      const t=state.tournament;
+      const kind=el.dataset.bracket;
+      const ri=+el.dataset.ri;
+      const mi=+el.dataset.mi;
+      let bracket=null;
+      if(kind==='ko')bracket=t.knockout;
+      else if(kind==='po')bracket=t.playoff;
+      else if(kind==='lchpo')bracket=t.lchPlayoff;
+      if(!bracket)break;
+      playFinalMatch(t,bracket,ri,mi);
+      break;
+    }
+    case 'close-final':{
+      const ov=document.querySelector('.final-overlay');
+      if(ov){
+        ov.style.transition='opacity .3s';
+        ov.style.opacity='0';
+        setTimeout(()=>ov.remove(),300);
+      }
+      break;
+    }
+
+    case 'random-bracket':{
+      const t=state.tournament;const which=el.dataset.bracket;
+      const before=(which==='po'&&t.playoff)?t.playoff.champion:null;
+      let ok=false;
+      if(which==='ko'&&t.knockout)ok=randomizeBracketRound(t.knockout,true);
+      if(which==='po'&&t.playoff)ok=randomizeBracketRound(t.playoff,true);
+      if(which==='styk'&&t.styk)ok=randomizeStykClassic();
+      if(which==='lchpo'&&t.lchPlayoff){ok=randomizeBracketRound(t.lchPlayoff,false);if(ok)checkLCHPlayoffComplete();}
+      if(!ok){alert('Все матчи завершены');break;}
+      saveTournament();render({keepScroll:true});
+      const after=(which==='po'&&t.playoff)?t.playoff.champion:null;
+      if(after!=null&&before==null)setTimeout(()=>showPodium(t),400);
+      break;
+    }
+    case 'close-podium':{
+      const ov=document.querySelector('.podium-overlay');
+      if(ov){ov.style.transition='opacity .4s';ov.style.opacity='0';setTimeout(()=>ov.remove(),400);}
+      break;
+    }
+    case 'copy-export':{
+      const ta=document.getElementById('export-area');if(!ta)break;
+      ta.select();ta.setSelectionRange(0,999999);
+      let ok=false;try{ok=document.execCommand('copy');}catch(e){}
+      if(navigator.clipboard){navigator.clipboard.writeText(ta.value).then(()=>{}).catch(()=>{});ok=true;}
+      alert(ok?'Код скопирован':'Скопируйте вручную');
+      break;
+    }
+    case 'reset-tournament':{
+      if(!confirm('Сбросить все результаты?'))break;
+      const t=state.tournament;
+      if(t.schedule)t.schedule.forEach(r=>r.matches.forEach(m=>{m.hg=null;m.ag=null;m.p=false;}));
+      if(t.groups)t.groups.forEach(g=>g.schedule.forEach(r=>r.matches.forEach(m=>{m.hg=null;m.ag=null;m.p=false;})));
+      t.knockout=null;t.playoff=null;t.styk=null;t.lchPlayoff=null;t.phase='regular';
+      state.round=1;saveTournament();render();break;
+    }
+    case 'delete-tournament':{
+      if(!confirm('Удалить турнир?'))break;
+      state.tournament=null;LS.set('ft_tournament',null);state.screen='menu';render();break;
+    }
+    case 'do-import':{
+      const ta=document.querySelector('[data-act="import-text"]');if(!ta)break;
+      tryImport(ta.value);break;
+    }
+    case 'set-theme':settings.theme=el.dataset.theme;LS.set('ft_settings',settings);applyTheme();render();break;
+    case 'set-accent':settings.accent=el.dataset.accent;LS.set('ft_settings',settings);applyTheme();render();break;
+    case 'del-preset':customPresets.splice(+el.dataset.i,1);LS.set('ft_presets',customPresets);render();break;
+    case 'clear-data':
+      if(!confirm('Удалить все данные?'))break;
+      localStorage.removeItem('ft_tournament');localStorage.removeItem('ft_presets');localStorage.removeItem('ft_settings');
+      state.tournament=null;customPresets=[];settings={theme:'dark',accent:'#22c55e'};applyTheme();render();
+      break;
+  }
+}
+
+/* ============ IMPORT ============ */
+function tryImport(text){
+  if(!text||!text.trim()){alert('Вставьте код');return;}
+  let obj=null;
+  try{obj=JSON.parse(text.trim());}catch(e){alert('Ошибка JSON');return;}
+  const err=validateImported(obj);
+  if(err){alert('Ошибка: '+err);return;}
+  state.tournament=obj;state.round=1;
+  state.tab=(obj.mode==='worldcup')?'groups':(obj.mode==='lch')?'league':'table';
+  state.screen='tournament';saveTournament();render();
+  alert('Турнир «'+obj.name+'» импортирован!');
+}
+function validateImported(o){
+  if(!o||typeof o!=='object')return 'не объект';
+  if(!Array.isArray(o.teams)||o.teams.length<2)return 'нет команд';
+  if(!o.mode)o.mode='classic';
+  if(o.mode==='worldcup'){if(!Array.isArray(o.groups))return 'нет групп';}
+  else{if(!Array.isArray(o.schedule)||!o.schedule.length)return 'нет календаря';}
+  if(typeof o.name!=='string')o.name='Импортированный';
+  if(!Array.isArray(o.zones))o.zones=[];
+  if(o.playoff===undefined)o.playoff=null;
+  if(o.styk===undefined)o.styk=null;
+  if(o.knockout===undefined)o.knockout=null;
+  if(o.lchPlayoff===undefined)o.lchPlayoff=null;
+  return null;
+}
+
+/* ============ EVENTS ============ */
+document.addEventListener('click',function(e){
+  const el=e.target.closest('[data-act]');if(!el)return;
+  const tag=el.tagName;
+  if(tag==='INPUT'||tag==='SELECT'||tag==='TEXTAREA'||tag==='OPTION')return;
+  handleAction(el.dataset.act,el);
+});
+document.addEventListener('input',function(e){
+  const el=e.target;const act=el.dataset.act;if(!act)return;
+  if(state.screen==='create')wizardField(act,el,false);
+  else if(state.screen==='tournament')tourField(act,el,false);
+});
+document.addEventListener('change',function(e){
+  const el=e.target;const act=el.dataset.act;
+  if(act==='import-file'){
+    const f=el.files&&el.files[0];if(!f)return;
+    const fr=new FileReader();
+    fr.onload=function(){tryImport(String(fr.result));};
+    fr.readAsText(f);
+    return;
+  }
+  if(!act)return;
+  if(state.screen==='create')wizardField(act,el,true);
+  else if(state.screen==='tournament')tourField(act,el,true);
+});
+
+/* ============ START ============ */
+applyTheme();
+if(state.tournament){
+  try{const err=validateImported(state.tournament);if(err)state.tournament=null;}catch(e){state.tournament=null;}
+}
+render();
+</script>
+</body>
+</html>
