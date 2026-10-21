@@ -2494,7 +2494,7 @@ class FinalMatchEngine {
     let bestDist = Infinity;
     this.players.forEach((p, i) => {
       const d = this._pointToSegment(p.x, p.y, prevX, prevY, b.x, b.y);
-      const catchRadius = (p.role === 'gk') ? 22 : 13;
+      const catchRadius = (p.role === 'gk') ? 15 : 13;
       if (d < catchRadius && d < bestDist) {
         bestDist = d;
         touchedIdx = i;
